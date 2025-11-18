@@ -4,7 +4,7 @@
 
 ### 1.1 什么是钩子系统
 
-●钩子的概念
+● 钩子的概念
 
 **钩子（Hook）** 是一种在不修改原始代码的情况下，拦截并扩展函数功能的技术。就像在函数执行的"关键点"上挂了一个"钩子"，让你可以在函数执行前后插入自己的逻辑。
 
@@ -16,7 +16,7 @@
 开始 → 你的前置逻辑 → 执行函数 → 你的后置逻辑 → 结束
 ```
 
-●为什么需要钩子？
+● 为什么需要钩子？
 
 **传统方式的问题：**
 
@@ -61,7 +61,7 @@ HookManager.regHook('Game_Player.prototype.moveStraight', function(next, d) {
 - ✅ 可以随时启用/禁用
 - ✅ 易于维护和调试
 
-●实际应用场景
+● 实际应用场景
 
 | 场景 | 传统方式 | 钩子方式 |
 |------|----------|----------|
@@ -76,7 +76,7 @@ HookManager.regHook('Game_Player.prototype.moveStraight', function(next, d) {
 
 让我们从最简单的例子开始：在玩家移动时打印一条日志。
 
-●完整代码
+● 完整代码
 
 ```javascript
 // 注册钩子：监听玩家移动
@@ -92,7 +92,7 @@ HookManager.regHook('Game_Player.prototype.moveStraight', function(next, directi
 });
 ```
 
-●代码解析
+● 代码解析
 
 **1. 目标函数路径**
 ```javascript
@@ -122,7 +122,7 @@ next(); // 调用原始函数
 console.log(this.x, this.y); // this 指向 Game_Player 实例
 ```
 
-●运行效果
+● 运行效果
 
 当玩家在地图上移动时，控制台会输出：
 
@@ -133,7 +133,7 @@ console.log(this.x, this.y); // this 指向 Game_Player 实例
 玩家移动完成，当前位置: 11 15
 ```
 
-●实验：尝试修改
+● 实验：尝试修改
 
 **实验1：阻止向下移动**
 ```javascript
@@ -165,7 +165,7 @@ HookManager.regHook('Game_Player.prototype.moveStraight', function(next, directi
 
 ### 1.3 基础概念
 
-●钩子链的执行顺序
+● 钩子链的执行顺序
 
 当多个钩子注册到同一个函数时，它们会形成一个"钩子链"：
 
@@ -219,7 +219,7 @@ C: 结束
 └─────────────────────────────────┘
 ```
 
-●`next()` 的调用时机
+● `next()` 的调用时机
 
 **1. Before 模式（前置处理）**
 ```javascript
@@ -262,7 +262,7 @@ HookManager.regHook('someFunction', function(next, arg) {
 });
 ```
 
-●如何阻止原函数执行
+● 如何阻止原函数执行
 
 **场景1：条件阻止**
 ```javascript
@@ -299,34 +299,11 @@ HookManager.regHook('Game_Player.prototype.encounterProgressValue', function(nex
 ```
 
 ---
-
-### 快速参考卡片
-
-```javascript
-// 基础语法
-HookManager.regHook(目标函数路径, 钩子函数, 配置选项);
-
-// 钩子函数签名
-function(next, ...原函数参数) {
-  // 前置逻辑
-  const result = next(); // 调用原函数
-  // 后置逻辑
-  return result;
-}
-
-// 常用模式
-// Before:  先处理，后 next()
-// After:   先 next()，后处理
-// Around:  前后都处理
-// Replace: 不调用 next()
-```
-
----
 ## 第二部分：核心功能详解
 
 ### 2.1 注册钩子的方式
 
-●基础语法
+● 基础语法
 
 ```javascript
 HookManager.regHook(target, hookFunc, options);
@@ -340,7 +317,7 @@ HookManager.regHook(target, hookFunc, options);
 | hookFunc | Function | ✓ | 钩子函数 |
 | options | Object | ✗ | 配置选项 |
 
-●字符串路径方式
+● 字符串路径方式
 
 ```javascript
 // 基础用法
@@ -362,11 +339,11 @@ HookManager.regHook('Game_Actor.prototype.changeHp', function(next, value) {
 
 ---
 
-●新旧版本 API 说明
+● 新旧版本 API 说明
 
 **HookManager 提供了两种调用方式：**
 
-#●1. 新版 API（推荐）
+#● 1. 新版 API（推荐）
 
 ```javascript
 // 直接使用 HookManager
@@ -388,7 +365,7 @@ unbind();
 - ✓ 完整的功能支持
 - ✓ 返回解绑函数
 
-#●2. 兼容旧版 API
+#● 2. 兼容旧版 API
 **通过 PluginManager 调用：**
 ```javascript
 // 通过 PluginManager 调用（兼容层）
@@ -407,7 +384,7 @@ const unbind = PluginManager.regHook('Game_Player.prototype.update', function(or
 
 ### 2.2 钩子函数的编写
 
-●函数签名
+● 函数签名
 
 ```javascript
 function(next, ...args) { return result }
@@ -444,7 +421,7 @@ HookManager.regHook('Game_Actor.prototype.changeHp', function(next, value) {
 });
 ```
 
-●返回值处理
+● 返回值处理
 
 **场景1：不需要返回值**
 ```javascript
@@ -484,7 +461,7 @@ HookManager.regHook('Game_Player.prototype.encounterProgressValue', function(nex
 });
 ```
 
-●常见模式
+● 常见模式
 
 **Before 模式（前置处理）**
 ```javascript
@@ -571,7 +548,7 @@ HookManager.regHook('Game_Actor.prototype.changeExp', function(next, exp, show) 
 
 ### 2.3 解绑钩子
 
-●为什么需要解绑
+● 为什么需要解绑
 
 **问题1：内存泄漏**
 ```javascript
@@ -602,7 +579,7 @@ function waitForPlayerMove() {
 }
 ```
 
-●使用解绑函数
+● 使用解绑函数
 
 **基础用法：**
 ```javascript
@@ -697,7 +674,7 @@ plugin.enable();
 plugin.disable();
 ```
 
-●内存泄漏风险
+● 内存泄漏风险
 
 **风险场景：**
 ```javascript
@@ -728,7 +705,7 @@ function setupHook() {
 }
 ```
 
-●最佳实践
+● 最佳实践
 
 **1. 始终保存解绑函数**
 ```javascript
@@ -791,11 +768,241 @@ HookManager.regHook('anotherHook', function(next) {
   next();
 });
 ```
+### 2.5 钩子管理方法
+
+● setHookEnabled - 启用/禁用钩子
+
+动态控制钩子的启用状态，而无需解绑。
+
+```javascript
+// 注册钩子时保存 hookId
+let myHookId;
+const unbind = HookManager.regHook('Game_Player.prototype.update', function(next) {
+  next();
+  console.log('玩家更新');
+}, {
+  priority: 100,
+  label: 'MyPlugin-PlayerUpdate'
+});
+
+// 获取 hookId（需要从内部访问）
+// 或者通过 HookManager.hooks 查找
+
+// 禁用钩子
+HookManager.setHookEnabled('Game_Player.prototype.update', myHookId, false);
+
+// 重新启用
+HookManager.setHookEnabled('Game_Player.prototype.update', myHookId, true);
+```
+
+**参数：**
+- `key` (string) - 钩子键（如 'Game_Player.prototype.update'）
+- `hookId` (Symbol) - 钩子的唯一标识符
+- `enabled` (boolean) - 是否启用
+
+**返回值：**
+- `boolean` - 操作是否成功
+
+**使用场景：**
+- 临时禁用某个功能
+- 根据游戏状态动态控制钩子
+- 调试时快速开关功能
+
+---
+
+● getStats - 获取性能统计
+
+获取指定钩子的性能统计信息。
+
+```javascript
+// 启用统计
+HookManager.globalOptions.enableStats = true;
+
+// 注册钩子
+const unbind = HookManager.regHook('Game_Player.prototype.update', function(next) {
+  next();
+  // 一些耗时操作
+}, {
+  label: 'MyPlugin-PlayerUpdate'
+});
+
+// 获取统计信息（需要 hookId）
+const stats = HookManager.getStats(hookId);
+
+if (stats) {
+  console.log('调用次数:', stats.callCount);
+  console.log('平均耗时:', stats.avgTime.toFixed(2), 'ms');
+  console.log('最小耗时:', stats.minTime.toFixed(2), 'ms');
+  console.log('最大耗时:', stats.maxTime.toFixed(2), 'ms');
+  console.log('总耗时:', stats.totalTime.toFixed(2), 'ms');
+  console.log('错误次数:', stats.errors);
+}
+```
+
+**参数：**
+- `hookId` (Symbol) - 钩子的唯一标识符
+
+**返回值：**
+- `Object|null` - 统计信息对象，包含：
+  - `callCount` - 调用次数
+  - `totalTime` - 总耗时（毫秒）
+  - `maxTime` - 最大耗时（毫秒）
+  - `minTime` - 最小耗时（毫秒）
+  - `avgTime` - 平均耗时（毫秒）
+  - `errors` - 错误次数
+
+**注意：**
+- 需要先启用 `globalOptions.enableStats`
+- 返回 `null` 表示未找到对应钩子
+
+---
+
+● printStats - 打印所有统计信息
+
+在控制台打印所有钩子的性能统计信息。
+
+```javascript
+// 启用统计
+HookManager.globalOptions.enableStats = true;
+
+// 注册多个钩子
+HookManager.regHook('Game_Player.prototype.update', function(next) {
+  next();
+}, { label: 'PlayerUpdate' });
+
+HookManager.regHook('Scene_Map.prototype.update', function(next) {
+  next();
+}, { label: 'MapUpdate' });
+
+// 运行一段时间后，打印统计
+HookManager.printStats();
+```
+
+**输出示例：**
+```
+=== Hook Performance Statistics ===
+
+Game_Player.prototype.update:
+  PlayerUpdate:
+    Calls: 1523
+    Avg: 0.15ms
+    Min: 0.08ms
+    Max: 2.34ms
+    Total: 228.45ms
+    Errors: 0
+
+Scene_Map.prototype.update:
+  MapUpdate:
+    Calls: 1523
+    Avg: 0.42ms
+    Min: 0.21ms
+    Max: 5.67ms
+    Total: 639.66ms
+    Errors: 0
+```
+
+**使用场景：**
+- 性能分析
+- 找出性能瓶颈
+- 优化钩子执行效率
+
+---
+
+● clearAll - 清除所有钩子
+
+移除所有已注册的钩子，恢复原始函数。
+
+```javascript
+// 注册多个钩子
+HookManager.regHook('Game_Player.prototype.update', hookFunc1);
+HookManager.regHook('Scene_Map.prototype.update', hookFunc2);
+HookManager.regHook('Game_Actor.prototype.setup', hookFunc3);
+
+// 清除所有钩子
+HookManager.clearAll();
+
+// 此时所有函数都恢复为原始状态
+```
+
+**功能：**
+- 移除所有钩子链
+- 恢复所有被代理的函数为原始函数
+- 清空统计数据
+- 清空条件缓存
+
+**使用场景：**
+- 插件卸载时清理
+- 重置游戏状态
+- 调试时快速清除所有钩子
+
+**注意事项：**
+- ⚠️ 此操作不可逆
+- ⚠️ 会影响所有使用 HookManager 的插件
+- ⚠️ 建议只在必要时使用
+
+---
+
+### 完整示例：钩子生命周期管理
+
+```javascript
+class MyPlugin {
+  static initialize() {
+    // 启用统计
+    HookManager.globalOptions.enableStats = true;
+    
+    // 保存钩子信息
+    this.hooks = new Map();
+    
+    // 注册钩子
+    const unbind = HookManager.regHook('Game_Player.prototype.update', function(next) {
+      next();
+      this.customUpdate();
+    }, {
+      priority: 100,
+      label: 'MyPlugin-PlayerUpdate'
+    });
+    
+    // 保存解绑函数和 hookId（实际使用中需要从内部获取）
+    this.hooks.set('playerUpdate', { unbind });
+  }
+  
+  static toggleFeature(enabled) {
+    // 动态启用/禁用功能
+    const hook = this.hooks.get('playerUpdate');
+    if (hook) {
+      HookManager.setHookEnabled('Game_Player.prototype.update', hook.id, enabled);
+    }
+  }
+  
+  static showPerformance() {
+    // 显示性能统计
+    HookManager.printStats();
+  }
+  
+  static terminate() {
+    // 清理所有钩子
+    this.hooks.forEach(hook => hook.unbind());
+    this.hooks.clear();
+  }
+}
+
+// 使用
+MyPlugin.initialize();
+
+// 临时禁用功能
+MyPlugin.toggleFeature(false);
+
+// 查看性能
+MyPlugin.showPerformance();
+
+// 卸载插件
+MyPlugin.terminate();
+```
 ## 第三部分：高级参数配置
 
 ### 3.1 优先级（priority）
 
-●概念说明
+● 概念说明
 
 **什么是优先级？**
 
@@ -827,9 +1034,7 @@ HookManager.regHook('update', hook3);
            │             ┘
            ┘
 ```
-### 3.1 优先级（priority）
-
-●使用场景
+● 使用场景
 
 **场景1：数据验证 → 数据修改 → UI更新**
 
@@ -872,7 +1077,7 @@ HookManager.regHook('Game_Action.prototype.apply', function(next, target) {
 }, { priority: 50, label: '技能特效' });
 ```
 
-●常见优先级建议
+● 常见优先级建议
 
 | 层级 | 优先级范围 | 用途 | 示例 |
 |------|-----------|------|------|
@@ -882,7 +1087,7 @@ HookManager.regHook('Game_Action.prototype.apply', function(next, target) {
 
 ### 3.2 条件执行（condition）
 
-●概念说明
+● 概念说明
 
 **什么是条件函数？**
 
@@ -906,7 +1111,7 @@ HookManager.regHook('update', function(next) {
 HookManager.globalOptions.conditionCacheTime = 100; // 默认100ms
 ```
 
-●使用场景
+● 使用场景
 
 **场景1：只在战斗中生效**
 
@@ -961,7 +1166,7 @@ HookManager.regHook('someFunction', function(next) {
 });
 ```
 
-●性能优化
+● 性能优化
 
 **条件 vs 解绑的选择：**
 
@@ -994,7 +1199,7 @@ HookManager.globalOptions.conditionCacheTime = 500; // 500ms
 ```
 ### 3.3 性能监控（profile）
 
-●基础用法
+● 基础用法
 
 **开启单个钩子的监控：**
 
@@ -1014,7 +1219,7 @@ HookManager.regHook('Scene_Map.prototype.update', function(next) {
 ⚠️ [Profile] 地图更新: 18.45ms  // 超过阈值
 ```
 
-●阈值（threshold）设置
+● 阈值（threshold）设置
 
 **默认阈值：16.67ms（60 FPS）**
 
@@ -1041,7 +1246,7 @@ HookManager.regHook('expensiveFunction', function(next) {
 { profile: true, threshold: 5 }
 ```
 
-●慢函数回调（onSlow）
+● 慢函数回调（onSlow）
 
 **基础用法：**
 
@@ -1102,7 +1307,7 @@ HookManager.regHook('heavyEffect', function(next) {
 });
 ```
 
-●标签（label）
+● 标签（label）
 
 **为钩子命名：**
 
@@ -1139,7 +1344,7 @@ HookManager.regHook('update', hook3, {
 
 ### 3.4 批量注册（regBatchHooks）
 
-●语法和结构
+● 语法和结构
 
 **基础语法：**
 
@@ -1167,7 +1372,7 @@ const unbinders = HookManager.regBatchHooks({...});
 // unbinders[1]() - 解绑第二个钩子
 ```
 
-●配置对象格式
+● 配置对象格式
 
 **完整示例：**
 
@@ -1207,7 +1412,7 @@ const hookConfig = {
 const unbinders = HookManager.regBatchHooks(hookConfig);
 ```
 
-●适用场景
+● 适用场景
 
 **场景1：插件初始化**
 
@@ -1321,7 +1526,7 @@ function disableBattleModule() {
 }
 ```
 
-●完整示例
+● 完整示例
 
 **技能增强系统：**
 
@@ -1398,7 +1603,7 @@ SkillEnhancementSystem.enable();
 
 ### 4.1 全局选项说明
 
-●访问全局配置
+● 访问全局配置
 
 ```javascript
 // 访问全局配置对象
@@ -1416,7 +1621,7 @@ console.log(HookManager.globalOptions);
 */
 ```
 
-●enableProfiling - 全局性能监控开关
+● enableProfiling - 全局性能监控开关
 
 **作用：** 控制所有钩子的性能监控功能
 
@@ -1461,7 +1666,7 @@ HookManager.regHook('frequentFunction', function(next) {
 });
 ```
 
-●enableStats - 统计信息收集开关
+● enableStats - 统计信息收集开关
 
 **作用：** 控制是否收集钩子的统计数据
 
@@ -1491,7 +1696,7 @@ HookManager.globalOptions.enableStats = true;  // 开发时使用
 HookManager.globalOptions.enableStats = false; // 生产时关闭
 ```
 
-●defaultPriority - 默认优先级
+● defaultPriority - 默认优先级
 
 **作用：** 设置钩子的默认优先级
 
@@ -1520,7 +1725,7 @@ HookManager.regHook('someFunction', hookB);
 // 执行顺序：hookA(100) → hookB(30)
 ```
 
-●conditionCacheTime - 条件缓存时间
+● conditionCacheTime - 条件缓存时间
 
 **作用：** 设置条件函数结果的缓存时间（毫秒）
 
@@ -1552,7 +1757,7 @@ HookManager.globalOptions.conditionCacheTime = 150;
 
 ### 4.2 配置最佳实践
 
-●开发环境配置
+● 开发环境配置
 
 ```javascript
 // 开发模式检测
@@ -1573,7 +1778,7 @@ if (isDevelopment) {
 }
 ```
 
-●生产环境配置
+● 生产环境配置
 
 ```javascript
 // 生产模式
@@ -1599,7 +1804,7 @@ if (isProduction) {
 }
 ```
 
-●性能测试配置
+● 性能测试配置
 
 ```javascript
 // 性能测试模式
@@ -1637,7 +1842,7 @@ function analyzeSlowHooks() {
 }
 ```
 
-●动态配置切换
+● 动态配置切换
 
 ```javascript
 // 根据设备性能动态调整
@@ -1670,7 +1875,7 @@ Scene_Boot.prototype.start = function() {
 };
 ```
 
-●配置模板
+● 配置模板
 
 ```javascript
 // 预设配置模板
@@ -1727,7 +1932,7 @@ applyConfig('development');
 
 ### 5.1 基础调试
 
-●使用 console.log 追踪执行流程
+● 使用 console.log 追踪执行流程
 
 **基础追踪：**
 
@@ -1784,7 +1989,7 @@ HookManager.regHook('Game_Actor.prototype.changeHp', function(next, value) {
 });
 ```
 
-●检查钩子是否被调用
+● 检查钩子是否被调用
 
 **方法1：计数器**
 
@@ -1829,7 +2034,7 @@ HookManager.regHook('criticalFunction', function(next) {
 });
 ```
 
-●验证参数传递
+● 验证参数传递
 
 **检查参数类型：**
 
@@ -1879,7 +2084,7 @@ HookManager.regHook('Game_Battler.prototype.performAction', function(next, actio
 
 ### 5.2 性能分析
 
-●启用统计功能
+● 启用统计功能
 
 **基础启用：**
 
@@ -1925,7 +2130,7 @@ HookManager.regBatchHooks({
 });
 ```
 
-●使用 printStats()
+● 使用 printStats()
 
 **基础用法：**
 
@@ -2037,7 +2242,7 @@ function suggestOptimizations() {
 }
 ```
 
-●使用 getStats(hookId)
+● 使用 getStats(hookId)
 
 **获取单个钩子统计：**
 
@@ -2116,7 +2321,7 @@ checkHookPerformance('玩家更新');
 ```
 ### 5.3 动态控制
 
-●setHookEnabled() 的使用
+● setHookEnabled() 的使用
 
 **基础用法：**
 
@@ -2143,7 +2348,7 @@ HookManager.setHookEnabled('Scene_Map.prototype.update', hookId, false); // 禁�
 HookManager.setHookEnabled('Scene_Map.prototype.update', hookId, true);  // 启用
 ```
 
-●临时禁用钩子
+● 临时禁用钩子
 
 **场景1：性能对比测试**
 
@@ -2228,7 +2433,7 @@ function testForIssue() {
 }
 ```
 
-●获取 hookId 的方法
+● 获取 hookId 的方法
 
 **方法1：通过标签查找**
 
@@ -2331,7 +2536,7 @@ if (targetHook) {
 
 ### 5.4 常见问题排查
 
-●钩子未生效
+● 钩子未生效
 
 **问题1：路径错误**
 
@@ -2455,7 +2660,7 @@ function diagnoseHookNotWorking(hookKey, hookLabel) {
 diagnoseHookNotWorking('Game_Player.prototype.update', '我的钩子');
 ```
 
-●钩子执行顺序错误
+● 钩子执行顺序错误
 
 **问题：优先级设置不当**
 
@@ -2497,7 +2702,7 @@ function debugHookOrder(hookKey) {
 // 使用
 debugHookOrder('Game_Action.prototype.apply');
 ```
-●性能问题
+● 性能问题
 
 **问题1：钩子耗时过长**
 
@@ -2642,7 +2847,7 @@ HookManager.regHook('Scene_Map.prototype.update', function(next) {
 });
 ```
 
-●内存泄漏
+● 内存泄漏
 
 **问题1：未解绑的钩子**
 
@@ -2891,7 +3096,7 @@ function quickDiagnostic() {
 
 ### 6.1 案例1：自定义移动系统
 
-●需求分析
+● 需求分析
 
 实现一个增强的移动系统，包含以下功能：
 1. 移动时播放脚步声
@@ -2899,7 +3104,7 @@ function quickDiagnostic() {
 3. 记录移动历史（用于回退功能）
 4. 移动速度根据地形变化
 
-●钩子设计
+● 钩子设计
 
 ```javascript
 // 功能分层设计
@@ -2908,7 +3113,7 @@ function quickDiagnostic() {
 // 优先级 50:  音效播放（最后执行）
 ```
 
-●完整代码
+● 完整代码
 
 ```javascript
 class EnhancedMovementSystem {
@@ -3043,7 +3248,7 @@ movementSystem.enable();
 window.undoMove = () => movementSystem.undoLastMove();
 ```
 
-●测试验证
+● 测试验证
 
 ```javascript
 // 测试脚本
@@ -3096,7 +3301,7 @@ function testMovementSystem() {
 
 ### 6.2 案例2：技能增强系统
 
-●需求分析
+● 需求分析
 
 实现一个技能增强系统，包含：
 1. 技能释放前的条件检查（MP、状态、冷却）
@@ -3104,7 +3309,7 @@ function testMovementSystem() {
 3. 技能特效（额外效果、动画）
 4. 性能监控
 
-●多层钩子协作
+● 多层钩子协作
 
 ```javascript
 class SkillEnhancementSystem {
@@ -3305,7 +3510,7 @@ window.checkCooldown = (actorId) => {
 };
 ```
 
-●技能备注标签示例
+● 技能备注标签示例
 
 ```
 技能备注栏配置示例：
@@ -3319,7 +3524,7 @@ window.checkCooldown = (actorId) => {
 <customAnimation:50>     // 播放50号动画
 ```
 
-●性能优化
+● 性能优化
 
 ```javascript
 // 性能监控
@@ -3349,7 +3554,7 @@ function monitorSkillPerformance() {
 ```
 ### 6.3 案例3：战斗日志系统
 
-●需求分析
+● 需求分析
 
 实现一个完整的战斗日志系统：
 1. 记录所有战斗行为（攻击、技能、道具）
@@ -3357,7 +3562,7 @@ function monitorSkillPerformance() {
 3. 实时显示日志窗口
 4. 支持日志导出和回放
 
-●Before/After 模式应用
+● Before/After 模式应用
 
 ```javascript
 class BattleLogSystem {
@@ -3592,7 +3797,7 @@ window.battleStats = () => {
 };
 ```
 
-●UI更新时机
+● UI更新时机
 
 ```javascript
 // 创建日志窗口（可选）
@@ -3639,14 +3844,14 @@ Scene_Battle.prototype.createAllWindows = function() {
 
 ### 6.4 案例4：插件兼容性处理
 
-●需求分析
+● 需求分析
 
 处理多个插件之间的兼容性问题：
 1. 检测其他插件的钩子
 2. 调整优先级避免冲突
 3. 提供降级方案
 
-●检测其他插件
+● 检测其他插件
 
 ```javascript
 class CompatibilityManager {
@@ -3744,7 +3949,7 @@ compatibility.adjustPriorities();
 compatibility.applyCompatibilityPatches();
 ```
 
-●优先级协商
+● 优先级协商
 
 ```javascript
 // 插件优先级注册表
@@ -3777,7 +3982,7 @@ HookManager.regHook('someFunction', myHook, {
 });
 ```
 
-●降级处理
+● 降级处理
 
 ```javascript
 class GracefulDegradation {
@@ -3830,7 +4035,7 @@ const unbind = GracefulDegradation.registerWithFallback(
 ```
 ### 6.5 案例5：性能优化实战
 
-●问题发现
+● 问题发现
 
 ```javascript
 // 步骤1: 启用性能监控
@@ -3924,7 +4129,7 @@ function generatePerformanceReport() {
 // startPerformanceAnalysis();
 ```
 
-●瓶颈定位
+● 瓶颈定位
 
 ```javascript
 // 深度分析特定函数
@@ -3973,7 +4178,7 @@ function analyzeFunction(functionPath) {
 // analyzeFunction('Game_Map.prototype.update');
 ```
 
-●优化方案
+● 优化方案
 
 **优化1: 减少不必要的计算**
 
@@ -4167,7 +4372,7 @@ HookManager.regHook('Sprite_Character.prototype.update', function(next) {
 });
 ```
 
-●效果对比
+● 效果对比
 
 ```javascript
 // 性能对比工具
@@ -4248,7 +4453,7 @@ function testOptimization() {
 // testOptimization();
 ```
 
-●优化清单
+● 优化清单
 
 ```javascript
 // 性能优化检查清单
@@ -4303,2143 +4508,11 @@ function printOptimizationChecklist() {
 // printOptimizationChecklist();
 ```
 
-## 第七部分：最佳实践
+## 第七部分：其它
 
-### 7.1 代码组织
+### 7.1 从原始插件迁移
 
-●钩子的模块化管理
-
-**方案1: 按功能模块组织**
-
-```javascript
-// modules/movement.js
-const MovementModule = {
-  hooks: [],
-  
-  initialize() {
-    this.hooks = HookManager.regBatchHooks({
-      'Game_Player.prototype.moveStraight': {
-        hook: this.onMoveStraight.bind(this),
-        priority: 100,
-        label: 'Movement-MoveStraight'
-      },
-      
-      'Game_Player.prototype.jump': {
-        hook: this.onJump.bind(this),
-        priority: 100,
-        label: 'Movement-Jump'
-      }
-    });
-  },
-  
-  onMoveStraight(next, direction) {
-    console.log('移动:', direction);
-    next();
-  },
-  
-  onJump(next, xPlus, yPlus) {
-    console.log('跳跃:', xPlus, yPlus);
-    next();
-  },
-  
-  terminate() {
-    this.hooks.forEach(unbind => unbind());
-    this.hooks = [];
-  }
-};
-
-// modules/battle.js
-const BattleModule = {
-  hooks: [],
-  
-  initialize() {
-    this.hooks = HookManager.regBatchHooks({
-      'Game_Action.prototype.apply': {
-        hook: this.onActionApply.bind(this),
-        priority: 100,
-        label: 'Battle-ActionApply'
-      },
-      
-      'Game_Battler.prototype.regenerateAll': {
-        hook: this.onRegenerate.bind(this),
-        priority: 50,
-        label: 'Battle-Regenerate'
-      }
-    });
-  },
-  
-  onActionApply(next, target) {
-    next();
-    // 战斗逻辑
-  },
-  
-  onRegenerate(next) {
-    next();
-    // 再生逻辑
-  },
-  
-  terminate() {
-    this.hooks.forEach(unbind => unbind());
-    this.hooks = [];
-  }
-};
-
-// main.js - 统一管理
-const PluginManager_Main = {
-  modules: [MovementModule, BattleModule],
-  
-  initialize() {
-    this.modules.forEach(module => {
-      try {
-        module.initialize();
-        console.log(`✓ ${module.constructor.name || 'Module'} 已加载`);
-      } catch (e) {
-        console.error(`❌ 模块加载失败:`, e);
-      }
-    });
-  },
-  
-  terminate() {
-    this.modules.forEach(module => module.terminate());
-  }
-};
-
-// 启动
-PluginManager_Main.initialize();
-```
-
-**方案2: 使用类组织**
-
-```javascript
-class FeatureModule {
-  constructor(name) {
-    this.name = name;
-    this.hooks = [];
-    this.enabled = false;
-  }
-  
-  registerHook(target, func, options = {}) {
-    if (!options.label) {
-      options.label = `${this.name}-${target}`;
-    }
-    
-    const unbind = HookManager.regHook(target, func, options);
-    this.hooks.push({ target, unbind, options });
-    return unbind;
-  }
-  
-  enable() {
-    if (this.enabled) return;
-    this.onEnable();
-    this.enabled = true;
-    console.log(`✓ ${this.name} 已启用`);
-  }
-  
-  disable() {
-    if (!this.enabled) return;
-    this.hooks.forEach(({ unbind }) => unbind());
-    this.hooks = [];
-    this.enabled = false;
-    console.log(`✓ ${this.name} 已禁用`);
-  }
-  
-  onEnable() {
-    // 子类实现
-  }
-}
-
-// 使用示例
-class CustomBattleSystem extends FeatureModule {
-  constructor() {
-    super('CustomBattleSystem');
-  }
-  
-  onEnable() {
-    this.registerHook('Game_Action.prototype.apply', 
-      this.handleAction.bind(this), 
-      { priority: 100 }
-    );
-    
-    this.registerHook('Game_Battler.prototype.regenerateHp',
-      this.handleRegen.bind(this),
-      { priority: 50 }
-    );
-  }
-  
-  handleAction(next, target) {
-    console.log('自定义战斗逻辑');
-    next();
-  }
-  
-  handleRegen(next) {
-    next();
-    console.log('自定义再生逻辑');
-  }
-}
-
-// 使用
-const battleSystem = new CustomBattleSystem();
-battleSystem.enable();
-
-// 禁用
-// battleSystem.disable();
-```
-
-●解绑函数的存储
-
-**方案1: 使用 Map 存储**
-
-```javascript
-class HookRegistry {
-  constructor() {
-    this.registry = new Map();
-  }
-  
-  register(id, target, func, options) {
-    const unbind = HookManager.regHook(target, func, options);
-    
-    this.registry.set(id, {
-      target,
-      unbind,
-      options,
-      registeredAt: Date.now()
-    });
-    
-    return unbind;
-  }
-  
-  unregister(id) {
-    const entry = this.registry.get(id);
-    if (entry) {
-      entry.unbind();
-      this.registry.delete(id);
-      return true;
-    }
-    return false;
-  }
-  
-  unregisterAll() {
-    this.registry.forEach(entry => entry.unbind());
-    this.registry.clear();
-  }
-  
-  list() {
-    const hooks = [];
-    this.registry.forEach((entry, id) => {
-      hooks.push({
-        id,
-        target: entry.target,
-        label: entry.options.label,
-        age: Date.now() - entry.registeredAt
-      });
-    });
-    return hooks;
-  }
-}
-
-// 使用
-const registry = new HookRegistry();
-
-registry.register('player-move', 'Game_Player.prototype.update', 
-  function(next) { next(); },
-  { label: '玩家移动' }
-);
-
-registry.register('battle-action', 'Game_Action.prototype.apply',
-  function(next, target) { next(); },
-  { label: '战斗行动' }
-);
-
-// 查看所有钩子
-console.table(registry.list());
-
-// 取消特定钩子
-registry.unregister('player-move');
-
-// 取消所有钩子
-registry.unregisterAll();
-```
-
-**方案2: 使用 WeakMap 避免内存泄漏**
-
-```javascript
-class SafeHookManager {
-  constructor() {
-    this.hooks = new WeakMap();
-    this.unbinders = [];
-  }
-  
-  register(owner, target, func, options) {
-    const unbind = HookManager.regHook(target, func, options);
-    
-    if (!this.hooks.has(owner)) {
-      this.hooks.set(owner, []);
-    }
-    
-    this.hooks.get(owner).push(unbind);
-    this.unbinders.push(unbind);
-    
-    return unbind;
-  }
-  
-  unregisterFor(owner) {
-    const unbinders = this.hooks.get(owner);
-    if (unbinders) {
-      unbinders.forEach(unbind => unbind());
-      this.hooks.delete(owner);
-    }
-  }
-  
-  unregisterAll() {
-    this.unbinders.forEach(unbind => unbind());
-    this.unbinders = [];
-  }
-}
-
-// 使用
-const manager = new SafeHookManager();
-const myObject = {};
-
-manager.register(myObject, 'update', function(next) { next(); });
-
-// 当 myObject 被垃圾回收时，WeakMap 会自动清理
-```
-
-●插件生命周期管理
-
-```javascript
-class Plugin {
-  constructor(name, version) {
-    this.name = name;
-    this.version = version;
-    this.state = 'uninitialized';
-    this.hooks = [];
-    this.timers = [];
-    this.resources = [];
-  }
-  
-  // 初始化
-  initialize() {
-    if (this.state !== 'uninitialized') {
-      console.warn(`${this.name} 已经初始化`);
-      return;
-    }
-    
-    try {
-      this.onInitialize();
-      this.state = 'initialized';
-      console.log(`✓ ${this.name} v${this.version} 初始化成功`);
-    } catch (e) {
-      this.state = 'error';
-      console.error(`❌ ${this.name} 初始化失败:`, e);
-    }
-  }
-  
-  // 启动
-  start() {
-    if (this.state !== 'initialized') {
-      console.warn(`${this.name} 未初始化`);
-      return;
-    }
-    
-    try {
-      this.onStart();
-      this.state = 'running';
-      console.log(`✓ ${this.name} 已启动`);
-    } catch (e) {
-      this.state = 'error';
-      console.error(`❌ ${this.name} 启动失败:`, e);
-    }
-  }
-  
-  // 停止
-  stop() {
-    if (this.state !== 'running') {
-      return;
-    }
-    
-    this.onStop();
-    this.cleanup();
-    this.state = 'stopped';
-    console.log(`✓ ${this.name} 已停止`);
-  }
-  
-  // 清理资源
-  cleanup() {
-    // 解绑钩子
-    this.hooks.forEach(unbind => unbind());
-    this.hooks = [];
-    
-    // 清除定时器
-    this.timers.forEach(id => clearInterval(id));
-    this.timers = [];
-    
-    // 释放资源
-    this.resources.forEach(resource => resource.dispose());
-    this.resources = [];
-  }
-  
-  // 注册钩子
-  registerHook(target, func, options) {
-    const unbind = HookManager.regHook(target, func, {
-      ...options,
-      label: `${this.name}-${options.label || target}`
-    });
-    
-    this.hooks.push(unbind);
-    return unbind;
-  }
-  
-  // 注册定时器
-  registerTimer(callback, interval) {
-    const id = setInterval(callback, interval);
-    this.timers.push(id);
-    return id;
-  }
-  
-  // 子类实现
-  onInitialize() {}
-  onStart() {}
-  onStop() {}
-}
-
-// 使用示例
-class MyCustomPlugin extends Plugin {
-  constructor() {
-    super('MyCustomPlugin', '1.0.0');
-  }
-  
-  onInitialize() {
-    // 加载配置
-    this.config = this.loadConfig();
-  }
-  
-  onStart() {
-    // 注册钩子
-    this.registerHook('Game_Player.prototype.update',
-      this.onPlayerUpdate.bind(this),
-      { priority: 100, label: 'PlayerUpdate' }
-    );
-    
-    // 注册定时器
-    this.registerTimer(() => {
-      this.periodicTask();
-    }, 1000);
-  }
-  
-  onStop() {
-    // 保存数据
-    this.saveData();
-  }
-  
-  onPlayerUpdate(next) {
-    next();
-    // 自定义逻辑
-  }
-  
-  periodicTask() {
-    // 定期任务
-  }
-  
-  loadConfig() {
-    return {};
-  }
-  
-  saveData() {
-    // 保存逻辑
-  }
-}
-
-// 使用
-const plugin = new MyCustomPlugin();
-plugin.initialize();
-plugin.start();
-
-// 停止插件
-// plugin.stop();
-```
-
----
-
-### 7.2 性能优化建议
-
-●何时使用条件 vs 解绑
-
-**决策流程：**
-
-```
-需要临时禁用钩子？
-├─ 是 → 条件会频繁变化？
-│         ├─ 是 → 使用条件函数
-│         └─ 否 → 使用解绑
-└─ 否 → 钩子永久有效
-```
-
-**使用条件函数：**
-
-```javascript
-// ✓ 条件频繁变化
-HookManager.regHook('update', function(next) {
-  next();
-}, {
-  condition: () => $gameSwitches.value(10) // 开关可能随时变化
-});
-
-// ✓ 条件检查简单
-HookManager.regHook('update', function(next) {
-  next();
-}, {
-  condition: () => SceneManager._scene instanceof Scene_Map
-});
-```
-
-**使用解绑：**
-
-```javascript
-// ✓ 一次性钩子
-const unbind = HookManager.regHook('update', function(next) {
-  next();
-  unbind(); // 执行一次后解绑
-});
-
-// ✓ 条件永久改变
-if (questCompleted) {
-  questHook(); // 解绑
-}
-```
-
-**对比表：**
-
-| 场景 | 条件函数 | 解绑 |
-|------|---------|------|
-| 条件频繁变化 | ✓ | ✗ |
-| 条件永久改变 | ✗ | ✓ |
-| 条件检查简单 | ✓ | - |
-| 条件检查复杂 | ✗ | ✓ |
-| 临时钩子 | ✗ | ✓ |
-
----
-
-●避免过深的钩子链
-
-**检测工具：**
-
-```javascript
-function checkChainDepth() {
-  HookManager.hooks.forEach((hookData, key) => {
-    if (hookData.chain.length > 5) {
-      console.warn(`⚠️ ${key}: ${hookData.chain.length} 个钩子`);
-    }
-  });
-}
-```
-
-**优化方案1：合并钩子**
-
-```javascript
-// ❌ 多个小钩子
-HookManager.regHook('update', hook1);
-HookManager.regHook('update', hook2);
-HookManager.regHook('update', hook3);
-
-// ✓ 合并为一个
-HookManager.regHook('update', function(next) {
-  next();
-  logic1();
-  logic2();
-  logic3();
-});
-```
-
-**优化方案2：使用优先级分层**
-
-```javascript
-const PRIORITY = {
-  VALIDATION: 200,
-  CORE: 100,
-  ENHANCEMENT: 50,
-  UI: 20
-};
-
-HookManager.regHook('apply', validateHook, { priority: PRIORITY.VALIDATION });
-HookManager.regHook('apply', coreHook, { priority: PRIORITY.CORE });
-HookManager.regHook('apply', uiHook, { priority: PRIORITY.UI });
-```
-
-**深度影响：**
-
-| 深度 | 性能影响 | 建议 |
-|------|---------|------|
-| 1-3 | 可忽略 | ✓ 理想 |
-| 4-5 | 轻微 | ⚠️ 考虑优化 |
-| 6-10 | 明显 | ❌ 需要优化 |
-| 10+ | 严重 | ❌ 必须重构 |
-
----
-
-●条件函数的优化
-
-**问题：复杂条件**
-
-```javascript
-// ❌ 每帧都遍历
-HookManager.regHook('update', function(next) {
-  next();
-}, {
-  condition: () => $gameMap.events().some(e => e.x === this.x)
-});
-
-// ✓ 缓存结果
-let cache = false;
-let lastCheck = 0;
-
-HookManager.regHook('update', function(next) {
-  next();
-}, {
-  condition: () => {
-    if (Date.now() - lastCheck > 500) {
-      cache = $gameMap.events().some(e => e.x === this.x);
-      lastCheck = Date.now();
-    }
-    return cache;
-  }
-});
-```
-
-**性能对比：**
-
-```javascript
-// 简单条件: ~0.001ms
-() => $gameSwitches.value(1)
-
-// 复杂条件: ~0.5ms
-() => $gameMap.events().length > 0
-
-// 缓存条件: ~0.002ms (大部分时间)
-() => cachedResult
-```
-
----
-
-●缓存时间的权衡
-
-**默认值：**
-
-```javascript
-HookManager.globalOptions.conditionCacheTime = 100; // 100ms
-```
-
-**调整建议：**
-
-| 场景 | 推荐值 | 原因 |
-|------|-------|------|
-| 条件变化频繁 | 50ms | 更及时 |
-| 条件变化缓慢 | 200-500ms | 减少检查 |
-| 高性能要求 | 200ms+ | 降低CPU |
-| 高精度要求 | 50ms以下 | 提高响应 |
-
-**示例：**
-
-```javascript
-// 开发模式：更频繁检查
-if (Utils.isOptionValid('test')) {
-  HookManager.globalOptions.conditionCacheTime = 50;
-}
-
-// 生产模式：优化性能
-else {
-  HookManager.globalOptions.conditionCacheTime = 200;
-}
-
-// 低性能设备：延长缓存
-if (Graphics._fpsMeter.fps < 30) {
-  HookManager.globalOptions.conditionCacheTime = 500;
-}
-```
-### 7.3 错误处理
-
-●钩子内的异常捕获
-
-**基础用法：**
-
-```javascript
-HookManager.regHook('Game_Player.prototype.update', function(next) {
-  try {
-    next();
-    this.customLogic();
-  } catch (error) {
-    console.error('钩子错误:', error.message);
-    console.error('堆栈:', error.stack);
-    // 不重新抛出，防止游戏崩溃
-  }
-});
-```
-
-**错误分类处理：**
-
-```javascript
-HookManager.regHook('Game_Action.prototype.apply', function(next, target) {
-  try {
-    next();
-    this.applyCustomEffects(target);
-  } catch (error) {
-    if (error instanceof TypeError) {
-      console.error('类型错误:', error.message);
-      // 使用默认值
-    } else if (error instanceof ReferenceError) {
-      console.error('引用错误:', error.message);
-      // 跳过该效果
-    } else {
-      console.error('未知错误:', error);
-      throw error; // 重新抛出严重错误
-    }
-  }
-});
-```
-
-**错误恢复：**
-
-```javascript
-let errorCount = 0;
-
-HookManager.regHook('Scene_Map.prototype.update', function(next) {
-  try {
-    next();
-    this.updateCustomSystems();
-  } catch (error) {
-    console.error('场景更新错误:', error);
-    
-    // 尝试恢复
-    this.recoverFromError();
-    
-    // 错误次数过多则禁用
-    if (++errorCount > 10) {
-      console.error('错误过多，禁用自定义系统');
-      this.disableCustomSystems();
-    }
-  }
-});
-```
-
----
-
-●降级策略
-
-**自动降级：**
-
-```javascript
-class FeatureToggle {
-  constructor(maxErrors = 5) {
-    this.enabled = true;
-    this.errorCount = 0;
-    this.maxErrors = maxErrors;
-  }
-  
-  execute(func, fallback) {
-    if (!this.enabled) {
-      return fallback ? fallback() : null;
-    }
-    
-    try {
-      return func();
-    } catch (error) {
-      console.error('功能错误:', error);
-      
-      if (++this.errorCount >= this.maxErrors) {
-        console.warn('功能已自动禁用');
-        this.enabled = false;
-      }
-      
-      return fallback ? fallback() : null;
-    }
-  }
-}
-
-// 使用
-const advancedEffects = new FeatureToggle(3);
-
-HookManager.regHook('Sprite_Character.prototype.update', function(next) {
-  next();
-  
-  advancedEffects.execute(
-    () => this.updateAdvancedShader(),  // 高级功能
-    () => this.updateBasicEffect()      // 降级方案
-  );
-});
-```
-
-**性能降级：**
-
-```javascript
-class PerformanceMonitor {
-  constructor() {
-    this.qualityLevel = 'high';
-  }
-  
-  update() {
-    const fps = Graphics._fpsMeter ? Graphics._fpsMeter.fps : 60;
-    
-    if (fps < 30 && this.qualityLevel !== 'low') {
-      this.qualityLevel = 'low';
-      console.warn('性能不足，降低画质');
-      this.applyLowQuality();
-    } else if (fps > 50 && this.qualityLevel === 'low') {
-      this.qualityLevel = 'high';
-      console.log('性能恢复，提升画质');
-      this.applyHighQuality();
-    }
-  }
-  
-  applyLowQuality() {
-    $gameSystem.disableParticles = true;
-    $gameSystem.animationFrameSkip = 2;
-  }
-  
-  applyHighQuality() {
-    $gameSystem.disableParticles = false;
-    $gameSystem.animationFrameSkip = 1;
-  }
-}
-
-const perfMonitor = new PerformanceMonitor();
-
-HookManager.regHook('Scene_Map.prototype.update', function(next) {
-  next();
-  perfMonitor.update();
-});
-```
-
----
-
-●日志记录
-
-**简单日志：**
-
-```javascript
-const errorLog = [];
-
-HookManager.regHook('criticalFunction', function(next) {
-  try {
-    return next();
-  } catch (error) {
-    errorLog.push({
-      time: new Date().toISOString(),
-      message: error.message,
-      stack: error.stack
-    });
-    throw error;
-  }
-});
-
-// 导出日志
-window.exportErrorLog = () => {
-  console.log(JSON.stringify(errorLog, null, 2));
-};
-```
-
-**完整日志系统：**
-
-```javascript
-class ErrorLogger {
-  constructor() {
-    this.errors = [];
-    this.maxErrors = 100;
-  }
-  
-  log(error, context = {}) {
-    const entry = {
-      timestamp: new Date().toISOString(),
-      message: error.message,
-      stack: error.stack,
-      context: context,
-      gameState: {
-        mapId: $gameMap ? $gameMap.mapId() : null,
-        gold: $gameParty ? $gameParty.gold() : null
-      }
-    };
-    
-    this.errors.push(entry);
-    
-    if (this.errors.length > this.maxErrors) {
-      this.errors.shift();
-    }
-    
-    console.error('[ErrorLogger]', entry);
-  }
-  
-  export() {
-    const data = JSON.stringify(this.errors, null, 2);
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `error_log_${Date.now()}.json`;
-    a.click();
-  }
-}
-
-const logger = new ErrorLogger();
-
-// 使用
-HookManager.regHook('someFunction', function(next) {
-  try {
-    return next();
-  } catch (error) {
-    logger.log(error, { hook: 'someFunction' });
-    throw error;
-  }
-});
-
-window.exportErrorLog = () => logger.export();
-```
-
----
-
-### 7.4 团队协作
-
-●钩子命名规范
-
-**推荐格式：**
-
-```
-[插件名]-[功能模块]-[具体功能]
-```
-
-**示例：**
-
-```javascript
-// ✓ 好的命名
-HookManager.regHook('update', hook, {
-  label: 'MyPlugin-Battle-DamageCalc'
-});
-
-HookManager.regHook('update', hook, {
-  label: 'MyPlugin-UI-StatusWindow'
-});
-
-HookManager.regHook('update', hook, {
-  label: 'MyPlugin-System-SaveLoad'
-});
-
-// ❌ 不好的命名
-HookManager.regHook('update', hook, {
-  label: 'hook1'  // 太模糊
-});
-
-HookManager.regHook('update', hook, {
-  label: 'my custom hook for updating player status'  // 太长
-});
-```
-
-**命名约定文档：**
-
-```javascript
-/**
- * 钩子命名规范
- * 
- * 格式: [PluginName]-[Module]-[Feature]
- * 
- * PluginName: 插件名称（驼峰命名）
- * Module: 功能模块
- *   - Battle: 战斗相关
- *   - UI: 界面相关
- *   - System: 系统相关
- *   - Map: 地图相关
- *   - Item: 道具相关
- * 
- * Feature: 具体功能（驼峰命名）
- * 
- * 示例:
- *   MyPlugin-Battle-CriticalCalc
- *   MyPlugin-UI-MenuEnhance
- *   MyPlugin-System-AutoSave
- */
-```
-
----
-
-●优先级分配约定
-
-**标准优先级层级：**
-
-```javascript
-const HOOK_PRIORITY = {
-  // 验证层 (200-299)
-  VALIDATION: 200,
-  PRE_VALIDATION: 250,
-  
-  // 核心逻辑层 (100-199)
-  CORE_LOGIC: 100,
-  CORE_CALCULATION: 150,
-  
-  // 增强层 (50-99)
-  ENHANCEMENT: 50,
-  FEATURE_ADDITION: 75,
-  
-  // UI/显示层 (1-49)
-  UI_UPDATE: 20,
-  VISUAL_EFFECT: 10
-};
-
-// 使用
-HookManager.regHook('Game_Action.prototype.apply', validateHook, {
-  priority: HOOK_PRIORITY.VALIDATION,
-  label: 'MyPlugin-Battle-Validation'
-});
-
-HookManager.regHook('Game_Action.prototype.apply', damageHook, {
-  priority: HOOK_PRIORITY.CORE_CALCULATION,
-  label: 'MyPlugin-Battle-DamageCalc'
-});
-
-HookManager.regHook('Game_Action.prototype.apply', effectHook, {
-  priority: HOOK_PRIORITY.ENHANCEMENT,
-  label: 'MyPlugin-Battle-StatusEffect'
-});
-
-HookManager.regHook('Game_Action.prototype.apply', uiHook, {
-  priority: HOOK_PRIORITY.UI_UPDATE,
-  label: 'MyPlugin-Battle-LogUpdate'
-});
-```
-
-**优先级协商机制：**
-
-```javascript
-// priority-registry.js
-class PriorityRegistry {
-  constructor() {
-    this.registry = new Map();
-  }
-  
-  register(pluginName, module, basePriority) {
-    const key = `${pluginName}-${module}`;
-    
-    if (this.registry.has(key)) {
-      console.warn(`优先级冲突: ${key} 已注册`);
-      return basePriority - 1; // 自动降低优先级
-    }
-    
-    this.registry.set(key, basePriority);
-    return basePriority;
-  }
-  
-  get(pluginName, module) {
-    return this.registry.get(`${pluginName}-${module}`);
-  }
-}
-
-const priorityRegistry = new PriorityRegistry();
-
-// 插件A注册
-const priorityA = priorityRegistry.register('PluginA', 'Battle', 100);
-
-// 插件B注册（自动避免冲突）
-const priorityB = priorityRegistry.register('PluginB', 'Battle', 100); // 返回99
-```
-
----
-
-●文档编写建议
-
-**钩子文档模板：**
-
-```javascript
-/**
- * 钩子: 伤害计算增强
- * 
- * @hook Game_Action.prototype.makeDamageValue
- * @priority 150 (CORE_CALCULATION)
- * @label MyPlugin-Battle-DamageCalc
- * 
- * @description
- * 在原始伤害计算后添加自定义加成：
- * - 连击加成
- * - 属性克制
- * - 暴击增强
- * 
- * @dependencies
- * - 需要在 Game_Action.prototype.apply 之前执行
- * - 依赖 $gameSystem.comboCount
- * 
- * @performance
- * - 平均耗时: 0.5ms
- * - 调用频率: 每次攻击
- * 
- * @compatibility
- * - 与 YEP_BattleEngineCore 兼容
- * - 需要在 MOG_BattleHud 之后加载
- * 
- * @example
- * // 启用连击系统
- * $gameSystem.enableCombo = true;
- */
-HookManager.regHook('Game_Action.prototype.makeDamageValue', 
-  function(next, target, critical) {
-    let damage = next();
-    
-    // 连击加成
-    if ($gameSystem.comboCount > 0) {
-      damage *= (1 + $gameSystem.comboCount * 0.1);
-    }
-    
-    return damage;
-  }, 
-  {
-    priority: 150,
-    label: 'MyPlugin-Battle-DamageCalc'
-  }
-);
-```
-
-**README 模板：**
-
-```markdown
-# MyPlugin
-
-## 钩子列表
-
-| 目标函数 | 优先级 | 标签 | 说明 |
-|---------|-------|------|------|
-| Game_Action.prototype.apply | 200 | MyPlugin-Battle-Validation | 参数验证 |
-| Game_Action.prototype.makeDamageValue | 150 | MyPlugin-Battle-DamageCalc | 伤害计算 |
-| Game_Action.prototype.apply | 50 | MyPlugin-Battle-StatusEffect | 状态效果 |
-
-## 优先级说明
-
-- 200: 验证层，最先执行
-- 150: 核心计算层
-- 50: 增强层，最后执行
-
-## 兼容性
-
-- ✓ 与 YEP_BattleEngineCore 兼容
-- ✓ 与 MOG_BattleHud 兼容
-- ⚠️ 需要在 SomePlugin 之后加载
-
-## 性能影响
-
-- 平均每帧增加: 0.2ms
-- 战斗中增加: 1.5ms
-```
-## 第八部分：API参考
-
-### 8.1 主要方法
-
-●regHook(target, hookFunc, options)
-
-**描述：** 注册一个钩子到指定的函数或方法
-
-**参数：**
-
-| 参数 | 类型 | 必需 | 说明 |
-|------|------|------|------|
-| target | String | ✓ | 目标函数路径，如 'Game_Player.prototype.update' |
-| hookFunc | Function | ✓ | 钩子函数，接收 next 和原始参数 |
-| options | Object | ✗ | 配置选项 |
-
-**返回值：** Function - 解绑函数
-
-**示例：**
-
-```javascript
-// 基础用法
-const unbind = HookManager.regHook(
-  'Game_Player.prototype.update',
-  function(next) {
-    console.log('更新前');
-    next();
-    console.log('更新后');
-  }
-);
-
-// 带选项
-const unbind = HookManager.regHook(
-  'Game_Action.prototype.apply',
-  function(next, target) {
-    console.log('应用技能到', target.name());
-    next();
-  },
-  {
-    priority: 100,
-    label: 'MyPlugin-Battle-Apply',
-    condition: () => $gameSwitches.value(10),
-    profile: true,
-    threshold: 5
-  }
-);
-
-// 解绑
-unbind();
-```
-
-**注意事项：**
-
-```javascript
-// ❌ 错误：路径不存在
-HookManager.regHook('NonExistent.function', hook);
-
-// ❌ 错误：hookFunc 不是函数
-HookManager.regHook('update', 'not a function');
-
-// ✓ 正确：检查路径是否存在
-if (typeof Game_Player.prototype.update === 'function') {
-  HookManager.regHook('Game_Player.prototype.update', hook);
-}
-```
-
----
-
-●regBatchHooks(hookMap)
-
-**描述：** 批量注册多个钩子
-
-**参数：**
-
-| 参数 | 类型 | 必需 | 说明 |
-|------|------|------|------|
-| hookMap | Object | ✓ | 钩子配置对象 |
-
-**返回值：** Array<Function> - 解绑函数数组
-
-**hookMap 格式：**
-
-```javascript
-{
-  '目标路径1': {
-    hook: Function,      // 必需
-    priority: Number,    // 可选
-    label: String,       // 可选
-    condition: Function, // 可选
-    profile: Boolean,    // 可选
-    threshold: Number,   // 可选
-    onSlow: Function     // 可选
-  },
-  '目标路径2': { ... }
-}
-```
-
-**示例：**
-
-```javascript
-// 基础用法
-const unbinders = HookManager.regBatchHooks({
-  'Game_Player.prototype.update': {
-    hook: function(next) {
-      next();
-      this.updateCustom();
-    },
-    label: 'Player-Update'
-  },
-  
-  'Game_Actor.prototype.changeHp': {
-    hook: function(next, value) {
-      console.log('HP变化:', value);
-      next();
-    },
-    priority: 100,
-    label: 'Actor-HP'
-  }
-});
-
-// 解绑所有
-unbinders.forEach(unbind => unbind());
-
-// 解绑特定钩子
-unbinders[0](); // 只解绑第一个
-```
-
-**完整示例：**
-
-```javascript
-class MyPlugin {
-  constructor() {
-    this.unbinders = [];
-  }
-  
-  enable() {
-    this.unbinders = HookManager.regBatchHooks({
-      'Game_Player.prototype.moveStraight': {
-        hook: this.onMove.bind(this),
-        priority: 100,
-        label: 'MyPlugin-Move',
-        condition: () => !$gamePlayer.isInVehicle()
-      },
-      
-      'Game_Action.prototype.apply': {
-        hook: this.onAction.bind(this),
-        priority: 150,
-        label: 'MyPlugin-Action',
-        profile: true,
-        threshold: 10
-      },
-      
-      'Scene_Map.prototype.update': {
-        hook: this.onMapUpdate.bind(this),
-        priority: 50,
-        label: 'MyPlugin-MapUpdate'
-      }
-    });
-  }
-  
-  disable() {
-    this.unbinders.forEach(unbind => unbind());
-    this.unbinders = [];
-  }
-  
-  onMove(next, d) { next(); }
-  onAction(next, target) { next(); }
-  onMapUpdate(next) { next(); }
-}
-```
-
----
-
-●setHookEnabled(key, hookId, enabled)
-
-**描述：** 动态启用或禁用特定钩子
-
-**参数：**
-
-| 参数 | 类型 | 必需 | 说明 |
-|------|------|------|------|
-| key | String | ✓ | 目标函数路径 |
-| hookId | Number | ✓ | 钩子ID |
-| enabled | Boolean | ✓ | true=启用, false=禁用 |
-
-**返回值：** void
-
-**获取 hookId：**
-
-```javascript
-// 方法1：通过标签查找
-function getHookId(key, label) {
-  const hookData = HookManager.hooks.get(key);
-  if (!hookData) return null;
-  
-  const hook = hookData.chain.find(h => h.label === label);
-  return hook ? hook.id : null;
-}
-
-// 方法2：注册时保存
-const hookRegistry = new Map();
-
-function registerAndSave(key, func, options) {
-  const unbind = HookManager.regHook(key, func, options);
-  
-  const hookData = HookManager.hooks.get(key);
-  const hook = hookData.chain[hookData.chain.length - 1];
-  
-  hookRegistry.set(options.label, {
-    key: key,
-    id: hook.id,
-    unbind: unbind
-  });
-  
-  return unbind;
-}
-```
-
-**示例：**
-
-```javascript
-// 注册钩子
-registerAndSave(
-  'Game_Player.prototype.update',
-  function(next) { next(); },
-  { label: 'MyHook' }
-);
-
-// 获取引用
-const ref = hookRegistry.get('MyHook');
-
-// 禁用钩子
-HookManager.setHookEnabled(ref.key, ref.id, false);
-
-// 启用钩子
-HookManager.setHookEnabled(ref.key, ref.id, true);
-```
-
-**实用工具：**
-
-```javascript
-class HookController {
-  constructor() {
-    this.hooks = new Map();
-  }
-  
-  register(name, key, func, options) {
-    const unbind = HookManager.regHook(key, func, {
-      ...options,
-      label: name
-    });
-    
-    const hookData = HookManager.hooks.get(key);
-    const hook = hookData.chain[hookData.chain.length - 1];
-    
-    this.hooks.set(name, {
-      key: key,
-      id: hook.id,
-      unbind: unbind,
-      enabled: true
-    });
-  }
-  
-  enable(name) {
-    const hook = this.hooks.get(name);
-    if (hook) {
-      HookManager.setHookEnabled(hook.key, hook.id, true);
-      hook.enabled = true;
-    }
-  }
-  
-  disable(name) {
-    const hook = this.hooks.get(name);
-    if (hook) {
-      HookManager.setHookEnabled(hook.key, hook.id, false);
-      hook.enabled = false;
-    }
-  }
-  
-  toggle(name) {
-    const hook = this.hooks.get(name);
-    if (hook) {
-      hook.enabled = !hook.enabled;
-      HookManager.setHookEnabled(hook.key, hook.id, hook.enabled);
-    }
-  }
-  
-  isEnabled(name) {
-    const hook = this.hooks.get(name);
-    return hook ? hook.enabled : false;
-  }
-}
-
-// 使用
-const controller = new HookController();
-
-controller.register('particles', 'update', particleHook);
-controller.register('weather', 'update', weatherHook);
-
-// 控制
-controller.disable('particles'); // 禁用粒子
-controller.enable('particles');  // 启用粒子
-controller.toggle('weather');    // 切换天气
-
-// 查询
-console.log(controller.isEnabled('particles')); // true/false
-```
-
----
-
-●getStats(hookId)
-
-**描述：** 获取指定钩子的统计信息
-
-**参数：**
-
-| 参数 | 类型 | 必需 | 说明 |
-|------|------|------|------|
-| hookId | Number | ✓ | 钩子ID |
-
-**返回值：** Object | null
-
-**返回对象结构：**
-
-```javascript
-{
-  callCount: Number,   // 调用次数
-  totalTime: Number,   // 总耗时(ms)
-  avgTime: Number,     // 平均耗时(ms)
-  minTime: Number,     // 最小耗时(ms)
-  maxTime: Number,     // 最大耗时(ms)
-  errors: Number       // 错误次数
-}
-```
-
-**示例：**
-
-```javascript
-// 启用统计
-HookManager.globalOptions.enableStats = true;
-
-// 注册钩子并保存ID
-const hookId = registerAndGetId('update', myHook);
-
-// 运行一段时间后查看统计
-setTimeout(() => {
-  const stats = HookManager.getStats(hookId);
-  
-  if (stats) {
-    console.log('调用次数:', stats.callCount);
-    console.log('平均耗时:', stats.avgTime.toFixed(2), 'ms');
-    console.log('最大耗时:', stats.maxTime.toFixed(2), 'ms');
-    
-    if (stats.avgTime > 5) {
-      console.warn('⚠️ 钩子性能较差');
-    }
-  }
-}, 60000);
-```
-
-**批量分析：**
-
-```javascript
-function analyzeAllHooks() {
-  const results = [];
-  
-  HookManager.hooks.forEach((hookData, key) => {
-    hookData.chain.forEach(hook => {
-      const stats = HookManager.getStats(hook.id);
-      
-      if (stats) {
-        results.push({
-          path: key,
-          label: hook.label,
-          calls: stats.callCount,
-          avg: stats.avgTime,
-          max: stats.maxTime,
-          total: stats.totalTime
-        });
-      }
-    });
-  });
-  
-  // 按总耗时排序
-  results.sort((a, b) => b.total - a.total);
-  
-  console.table(results);
-  
-  return results;
-}
-
-// 使用
-analyzeAllHooks();
-```
-
----
-
-●printStats()
-
-**描述：** 打印所有钩子的统计信息到控制台
-
-**参数：** 无
-
-**返回值：** void
-
-**输出格式：**
-
-```
-=== Hook Performance Statistics ===
-
-Game_Player.prototype.update:
-  MyPlugin-Player-Update:
-    Calls: 3600
-    Avg: 0.12ms
-    Min: 0.08ms
-    Max: 2.34ms
-    Total: 432.00ms
-    Errors: 0
-
-Game_Action.prototype.apply:
-  MyPlugin-Battle-Action:
-    Calls: 150
-    Avg: 1.25ms
-    Min: 0.95ms
-    Max: 5.67ms
-    Total: 187.50ms
-    Errors: 0
-```
-
-**示例：**
-
-```javascript
-// 启用统计
-HookManager.globalOptions.enableStats = true;
-
-// 运行游戏60秒
-setTimeout(() => {
-  HookManager.printStats();
-}, 60000);
-
-// 定期输出
-setInterval(() => {
-  console.clear();
-  HookManager.printStats();
-}, 30000);
-```
-
----
-
-●clearAll()
-
-**描述：** 清除所有已注册的钩子
-
-**参数：** 无
-
-**返回值：** void
-
-**示例：**
-
-```javascript
-// 紧急清理
-function emergencyCleanup() {
-  console.warn('执行紧急清理...');
-  HookManager.clearAll();
-  console.log('✓ 所有钩子已清除');
-}
-
-// 重置系统
-function resetHookSystem() {
-  HookManager.clearAll();
-  
-  // 重新注册核心钩子
-  initializeCoreHooks();
-}
-
-// 在控制台调用
-window.clearAllHooks = () => HookManager.clearAll();
-```
-
-**注意事项：**
-
-```javascript
-// ⚠️ clearAll() 会清除所有钩子，包括其他插件的钩子
-// 使用前请确认
-
-// 更安全的做法：只清除自己的钩子
-class MyPlugin {
-  constructor() {
-    this.unbinders = [];
-  }
-  
-  registerHook(key, func, options) {
-    const unbind = HookManager.regHook(key, func, options);
-    this.unbinders.push(unbind);
-    return unbind;
-  }
-  
-  clearMyHooks() {
-    this.unbinders.forEach(unbind => unbind());
-    this.unbinders = [];
-  }
-}
-```
-### 8.2 配置选项
-
-●完整的 options 对象结构
-
-```javascript
-{
-  priority: Number,        // 优先级 (默认: 50)
-  label: String,          // 标签 (默认: 自动生成)
-  condition: Function,    // 条件函数 (默认: null)
-  profile: Boolean,       // 性能监控 (默认: false)
-  threshold: Number,      // 慢钩子阈值(ms) (默认: 16.67)
-  onSlow: Function        // 慢钩子回调 (默认: null)
-}
-```
-
-●参数详细说明
-
-**priority (优先级)**
-
-- **类型：** Number
-- **默认值：** 50 (继承自 `HookManager.globalOptions.defaultPriority`)
-- **范围：** 任意数字，推荐 1-300
-- **说明：** 数字越大，优先级越高，越先执行
-
-```javascript
-// 示例
-HookManager.regHook('update', hook1, { priority: 200 }); // 最先执行
-HookManager.regHook('update', hook2, { priority: 100 });
-HookManager.regHook('update', hook3, { priority: 50 });  // 最后执行
-
-// 推荐分层
-const PRIORITY = {
-  CRITICAL: 300,      // 关键系统
-  VALIDATION: 200,    // 验证层
-  CORE: 100,          // 核心逻辑
-  ENHANCEMENT: 50,    // 功能增强
-  UI: 20              // 界面更新
-};
-```
-
----
-
-**label (标签)**
-
-- **类型：** String
-- **默认值：** 自动生成 (如 "Hook-1", "Hook-2")
-- **说明：** 用于识别和调试钩子
-
-```javascript
-// 推荐命名格式
-HookManager.regHook('update', hook, {
-  label: 'PluginName-Module-Feature'
-});
-
-// 示例
-HookManager.regHook('Game_Action.prototype.apply', hook, {
-  label: 'MyPlugin-Battle-DamageCalc'
-});
-
-// 用于调试
-HookManager.hooks.forEach((hookData, key) => {
-  hookData.chain.forEach(hook => {
-    console.log(hook.label); // 输出所有标签
-  });
-});
-```
-
----
-
-**condition (条件函数)**
-
-- **类型：** Function
-- **默认值：** null (无条件限制)
-- **返回值：** Boolean
-- **说明：** 返回 true 时钩子执行，false 时跳过
-
-```javascript
-// 基于开关
-HookManager.regHook('update', hook, {
-  condition: () => $gameSwitches.value(10)
-});
-
-// 基于场景
-HookManager.regHook('update', hook, {
-  condition: () => SceneManager._scene instanceof Scene_Battle
-});
-
-// 基于对象状态
-HookManager.regHook('Game_Actor.prototype.attackSkillId', hook, {
-  condition: function() {
-    return this.level >= 10; // this 指向 Game_Actor 实例
-  }
-});
-
-// 复杂条件
-HookManager.regHook('update', hook, {
-  condition: function() {
-    return $gameSwitches.value(10) && 
-           !$gamePlayer.isInVehicle() &&
-           $gameMap.mapId() === 5;
-  }
-});
-```
-
-**条件缓存：**
-
-```javascript
-// 条件结果会被缓存，缓存时间由全局配置控制
-HookManager.globalOptions.conditionCacheTime = 100; // 100ms
-
-// 如果条件函数开销大，建议延长缓存时间
-HookManager.globalOptions.conditionCacheTime = 500;
-```
-
----
-
-**profile (性能监控)**
-
-- **类型：** Boolean
-- **默认值：** false (继承自 `HookManager.globalOptions.enableProfiling`)
-- **说明：** 是否监控该钩子的性能
-
-```javascript
-// 单独启用
-HookManager.regHook('expensiveFunction', hook, {
-  profile: true
-});
-
-// 全局启用
-HookManager.globalOptions.enableProfiling = true;
-
-// 此后注册的钩子默认开启监控
-HookManager.regHook('update', hook); // 自动监控
-
-// 显式关闭
-HookManager.regHook('frequentFunction', hook, {
-  profile: false // 即使全局开启也不监控
-});
-```
-
----
-
-**threshold (慢钩子阈值)**
-
-- **类型：** Number
-- **默认值：** 16.67 (1帧时间，60fps)
-- **单位：** 毫秒(ms)
-- **说明：** 超过此时间触发 onSlow 回调
-
-```javascript
-// 默认阈值 (1帧)
-HookManager.regHook('update', hook, {
-  profile: true,
-  threshold: 16.67
-});
-
-// 更严格的阈值
-HookManager.regHook('criticalFunction', hook, {
-  profile: true,
-  threshold: 5 // 超过5ms就警告
-});
-
-// 宽松的阈值
-HookManager.regHook('backgroundTask', hook, {
-  profile: true,
-  threshold: 50 // 50ms以内可接受
-});
-```
-
----
-
-**onSlow (慢钩子回调)**
-
-- **类型：** Function
-- **默认值：** null
-- **参数：** duration (Number) - 实际耗时(ms)
-- **说明：** 当钩子耗时超过 threshold 时调用
-
-```javascript
-// 基础用法
-HookManager.regHook('update', hook, {
-  profile: true,
-  threshold: 10,
-  onSlow: (duration) => {
-    console.warn(`钩子耗时过长: ${duration.toFixed(2)}ms`);
-  }
-});
-
-// 记录慢钩子
-const slowLog = [];
-
-HookManager.regHook('Game_Action.prototype.apply', hook, {
-  profile: true,
-  threshold: 5,
-  label: 'MyHook',
-  onSlow: (duration) => {
-    slowLog.push({
-      time: new Date(),
-      duration: duration,
-      label: 'MyHook'
-    });
-  }
-});
-
-// 自动降级
-let slowCount = 0;
-
-HookManager.regHook('advancedEffect', hook, {
-  profile: true,
-  threshold: 10,
-  onSlow: (duration) => {
-    slowCount++;
-    if (slowCount > 10) {
-      console.warn('性能不足，禁用高级特效');
-      $gameSystem.disableAdvancedEffects = true;
-    }
-  }
-});
-```
-
----
-
-●参数组合建议
-
-**场景1：开发调试**
-
-```javascript
-HookManager.regHook('Game_Player.prototype.update', hook, {
-  priority: 100,
-  label: 'MyPlugin-Player-Update',
-  profile: true,
-  threshold: 5,
-  onSlow: (duration) => {
-    console.warn(`Player update slow: ${duration}ms`);
-  }
-});
-```
-
-**场景2：条件执行**
-
-```javascript
-HookManager.regHook('update', hook, {
-  priority: 50,
-  label: 'MyPlugin-Weather',
-  condition: () => $gameSwitches.value(10),
-  profile: false // 条件已经过滤，不需要监控
-});
-```
-
-**场景3：生产环境**
-
-```javascript
-HookManager.regHook('criticalFunction', hook, {
-  priority: 200,
-  label: 'MyPlugin-Critical',
-  profile: true,
-  threshold: 16.67,
-  onSlow: (duration) => {
-    // 发送遥测数据
-    sendTelemetry('slow_hook', { duration });
-  }
-});
-```
-
-**场景4：临时钩子**
-
-```javascript
-const unbind = HookManager.regHook('update', hook, {
-  priority: 50,
-  label: 'Temporary-Effect',
-  profile: false // 临时钩子不需要监控
-});
-
-setTimeout(() => unbind(), 5000);
-```
-
-**场景5：高频钩子**
-
-```javascript
-HookManager.regHook('Sprite_Character.prototype.update', hook, {
-  priority: 50,
-  label: 'MyPlugin-Sprite',
-  condition: () => !$gameSystem.disableEffects, // 提供开关
-  profile: false, // 高频调用，避免监控开销
-  threshold: 1    // 如果启用监控，使用严格阈值
-});
-```
-
----
-
-### 8.3 内部结构（高级）
-
-●钩子链的数据结构
-
-**HookManager.hooks 结构：**
-
-```javascript
-Map {
-  'Game_Player.prototype.update' => {
-    original: Function,      // 原始函数
-    chain: [                 // 钩子链数组
-      {
-        id: 1,              // 唯一ID
-        func: Function,     // 钩子函数
-        priority: 100,      // 优先级
-        label: 'Hook-1',    // 标签
-        enabled: true,      // 是否启用
-        condition: null,    // 条件函数
-        profile: false,     // 是否监控
-        threshold: 16.67,   // 阈值
-        onSlow: null        // 慢钩子回调
-      },
-      {
-        id: 2,
-        func: Function,
-        priority: 50,
-        // ...
-      }
-    ]
-  },
-  'Game_Action.prototype.apply' => { ... }
-}
-```
-
-**访问内部数据：**
-
-```javascript
-// 获取钩子数据
-const hookData = HookManager.hooks.get('Game_Player.prototype.update');
-
-console.log('原始函数:', hookData.original);
-console.log('钩子数量:', hookData.chain.length);
-
-// 遍历钩子链
-hookData.chain.forEach(hook => {
-  console.log(`[${hook.priority}] ${hook.label}`);
-});
-
-// 查找特定钩子
-const myHook = hookData.chain.find(h => h.label === 'MyPlugin-Update');
-if (myHook) {
-  console.log('钩子ID:', myHook.id);
-  console.log('是否启用:', myHook.enabled);
-}
-```
-
-**统计数据结构：**
-
-```javascript
-// HookManager.stats 结构
-Map {
-  1 => {  // hookId
-    callCount: 3600,
-    totalTime: 432.5,
-    avgTime: 0.12,
-    minTime: 0.08,
-    maxTime: 2.34,
-    errors: 0
-  },
-  2 => { ... }
-}
-```
-
----
-
-●Proxy 的工作原理
-
-**Proxy 拦截机制：**
-
-```javascript
-// 简化的实现原理
-function createProxy(target, hookData) {
-  return new Proxy(hookData.original, {
-    apply(originalFunc, thisArg, args) {
-      // 1. 构建执行链
-      let index = 0;
-      const chain = hookData.chain.filter(h => h.enabled);
-      
-      function next() {
-        if (index >= chain.length) {
-          // 执行原始函数
-          return originalFunc.apply(thisArg, args);
-        }
-        
-        const hook = chain[index++];
-        
-        // 2. 检查条件
-        if (hook.condition && !checkCondition(hook)) {
-          return next();
-        }
-        
-        // 3. 性能监控
-        if (hook.profile) {
-          const start = performance.now();
-          const result = hook.func.call(thisArg, next, ...args);
-          const duration = performance.now() - start;
-          
-          recordStats(hook.id, duration);
-          
-          if (duration > hook.threshold && hook.onSlow) {
-            hook.onSlow(duration);
-          }
-          
-          return result;
-        }
-        
-        // 4. 正常执行
-        return hook.func.call(thisArg, next, ...args);
-      }
-      
-      return next();
-    }
-  });
-}
-```
-
-**执行流程图：**
-
-```
-调用函数
-  ↓
-Proxy 拦截
-  ↓
-遍历钩子链 (按优先级排序)
-  ↓
-检查 enabled ──→ false ──→ 跳过
-  ↓ true
-检查 condition ──→ false ──→ 跳过
-  ↓ true
-性能监控开始 (如果 profile=true)
-  ↓
-执行钩子函数
-  ↓
-钩子调用 next()
-  ↓
-下一个钩子 / 原始函数
-  ↓
-性能监控结束
-  ↓
-检查是否超过 threshold
-  ↓ 是
-调用 onSlow
-  ↓
-返回结果
-```
-
----
-
-●条件缓存机制
-
-**缓存实现：**
-
-```javascript
-// 简化的缓存机制
-const conditionCache = new Map();
-
-function checkCondition(hook) {
-  if (!hook.condition) return true;
-  
-  const cacheKey = hook.id;
-  const cached = conditionCache.get(cacheKey);
-  
-  // 检查缓存是否有效
-  if (cached && Date.now() - cached.time < HookManager.globalOptions.conditionCacheTime) {
-    return cached.result;
-  }
-  
-  // 执行条件函数
-  const result = hook.condition();
-  
-  // 缓存结果
-  conditionCache.set(cacheKey, {
-    result: result,
-    time: Date.now()
-  });
-  
-  return result;
-}
-```
-
-**缓存策略：**
-
-```javascript
-// 全局缓存时间
-HookManager.globalOptions.conditionCacheTime = 100; // 100ms
-
-// 缓存时间越长，性能越好，但响应越慢
-// 缓存时间越短，响应越快，但性能开销越大
-
-// 示例：条件变化频繁
-HookManager.globalOptions.conditionCacheTime = 50;
-
-// 示例：条件变化缓慢
-HookManager.globalOptions.conditionCacheTime = 500;
-```
-
-**缓存清理：**
-
-```javascript
-// 缓存会在以下情况清理：
-// 1. 超过缓存时间自动失效
-// 2. 钩子被解绑时清除
-// 3. 调用 clearAll() 时清除
-
-// 手动清理缓存（内部方法）
-function clearConditionCache(hookId) {
-  conditionCache.delete(hookId);
-}
-```
-## 第九部分：迁移指南
-
-### 9.1 从原始插件迁移
-
-●API 差异对比
+● API 差异对比
 
 **原始别名方式：**
 
@@ -6478,7 +4551,7 @@ HookManager.regHook('Game_Player.prototype.update', function(next) {
 
 ---
 
-●迁移步骤
+● 迁移步骤
 
 **步骤1：识别所有别名**
 
@@ -6568,7 +4641,7 @@ HookManager.regHook('Scene_Map.prototype.update', function(next) {
 
 ---
 
-●兼容性说明
+● 兼容性说明
 
 **向后兼容：**
 
@@ -6613,9 +4686,9 @@ HookManager.regHook('Game_Player.prototype.update', hook2);
 
 ---
 
-### 9.2 从其他钩子系统迁移
+### 7.2 从其他钩子系统迁移
 
-●vs YEP 别名系统
+● vs YEP 别名系统
 
 **YEP 方式：**
 
@@ -6659,7 +4732,7 @@ HookManager.regHook('someFunction', hook, {
 
 ---
 
-●vs FOSSIL
+● vs FOSSIL
 
 **FOSSIL 方式：**
 
@@ -6702,7 +4775,7 @@ HookManager.regHook('Game_Player.prototype.update', function(next) {
 
 ---
 
-●迁移工具脚本
+● 迁移工具脚本
 
 **自动转换工具：**
 
@@ -6846,192 +4919,10 @@ migration.addConversion(
 const migratedCode = migration.migrate(oldPluginCode);
 console.log(migratedCode);
 ```
-## 第十部分：附录
 
-### 10.1 常用钩子路径速查表
+### 7.3 故障排查清单
 
-●Scene 相关
-
-```javascript
-// 场景生命周期
-'Scene_Base.prototype.create'
-'Scene_Base.prototype.start'
-'Scene_Base.prototype.update'
-'Scene_Base.prototype.stop'
-'Scene_Base.prototype.terminate'
-
-// 地图场景
-'Scene_Map.prototype.create'
-'Scene_Map.prototype.start'
-'Scene_Map.prototype.update'
-'Scene_Map.prototype.updateMain'
-'Scene_Map.prototype.stop'
-
-// 战斗场景
-'Scene_Battle.prototype.create'
-'Scene_Battle.prototype.start'
-'Scene_Battle.prototype.update'
-'Scene_Battle.prototype.updateBattleProcess'
-'Scene_Battle.prototype.stop'
-
-// 菜单场景
-'Scene_Menu.prototype.create'
-'Scene_Menu.prototype.start'
-'Scene_Menu.prototype.createCommandWindow'
-
-// 道具场景
-'Scene_Item.prototype.create'
-'Scene_Item.prototype.onItemOk'
-'Scene_Item.prototype.useItem'
-```
-
-●Game 对象相关
-
-**Game_Player:**
-
-```javascript
-'Game_Player.prototype.update'
-'Game_Player.prototype.moveStraight'
-'Game_Player.prototype.moveDiagonally'
-'Game_Player.prototype.jump'
-'Game_Player.prototype.increaseSteps'
-'Game_Player.prototype.checkEventTriggerHere'
-'Game_Player.prototype.checkEventTriggerThere'
-'Game_Player.prototype.getOnVehicle'
-'Game_Player.prototype.getOffVehicle'
-```
-
-**Game_Actor:**
-
-```javascript
-'Game_Actor.prototype.setup'
-'Game_Actor.prototype.changeExp'
-'Game_Actor.prototype.levelUp'
-'Game_Actor.prototype.changeHp'
-'Game_Actor.prototype.changeMp'
-'Game_Actor.prototype.changeEquip'
-'Game_Actor.prototype.learnSkill'
-'Game_Actor.prototype.forgetSkill'
-```
-
-**Game_Action:**
-
-```javascript
-'Game_Action.prototype.apply'
-'Game_Action.prototype.makeDamageValue'
-'Game_Action.prototype.executeDamage'
-'Game_Action.prototype.executeHpDamage'
-'Game_Action.prototype.executeMpDamage'
-'Game_Action.prototype.itemEffectRecoverHp'
-'Game_Action.prototype.itemEffectAddState'
-```
-
-**Game_Battler:**
-
-```javascript
-'Game_Battler.prototype.regenerateAll'
-'Game_Battler.prototype.regenerateHp'
-'Game_Battler.prototype.regenerateMp'
-'Game_Battler.prototype.addState'
-'Game_Battler.prototype.removeState'
-'Game_Battler.prototype.die'
-```
-
-**Game_Map:**
-
-```javascript
-'Game_Map.prototype.setup'
-'Game_Map.prototype.update'
-'Game_Map.prototype.scrollDown'
-'Game_Map.prototype.scrollLeft'
-'Game_Map.prototype.scrollRight'
-'Game_Map.prototype.scrollUp'
-```
-
-●Sprite 相关
-
-```javascript
-// 角色精灵
-'Sprite_Character.prototype.update'
-'Sprite_Character.prototype.updatePosition'
-'Sprite_Character.prototype.updateBitmap'
-
-// 战斗者精灵
-'Sprite_Battler.prototype.update'
-'Sprite_Battler.prototype.updatePosition'
-'Sprite_Battler.prototype.updateDamagePopup'
-
-// 敌人精灵
-'Sprite_Enemy.prototype.update'
-'Sprite_Enemy.prototype.updateBitmap'
-
-// 角色精灵（战斗）
-'Sprite_Actor.prototype.update'
-'Sprite_Actor.prototype.updateBitmap'
-```
-
-●Window 相关
-
-```javascript
-// 基础窗口
-'Window_Base.prototype.update'
-'Window_Base.prototype.drawText'
-'Window_Base.prototype.drawIcon'
-
-// 选择窗口
-'Window_Selectable.prototype.update'
-'Window_Selectable.prototype.select'
-'Window_Selectable.prototype.activate'
-
-// 命令窗口
-'Window_Command.prototype.makeCommandList'
-'Window_Command.prototype.addCommand'
-
-// 消息窗口
-'Window_Message.prototype.update'
-'Window_Message.prototype.startMessage'
-'Window_Message.prototype.terminateMessage'
-```
-### 10.2 性能基准参考
-
-●不同场景的性能阈值
-
-**地图场景 (60fps = 16.67ms/帧):**
-
-| 系统 | 推荐阈值 | 说明 |
-|------|---------|------|
-| 玩家更新 | 1ms | 每帧执行 |
-| 事件更新 | 5ms | 取决于事件数量 |
-| 地图滚动 | 2ms | 频繁调用 |
-| 碰撞检测 | 3ms | 移动时调用 |
-
-**战斗场景:**
-
-| 系统 | 推荐阈值 | 说明 |
-|------|---------|------|
-| 伤害计算 | 5ms | 每次攻击 |
-| 动画播放 | 10ms | 视觉效果 |
-| 状态更新 | 3ms | 回合开始/结束 |
-| UI更新 | 5ms | 频繁刷新 |
-
-**优化目标:**
-
-```javascript
-// 高频钩子 (每帧调用)
-const HIGH_FREQ_THRESHOLD = 1;   // 1ms
-
-// 中频钩子 (偶尔调用)
-const MID_FREQ_THRESHOLD = 5;    // 5ms
-
-// 低频钩子 (很少调用)
-const LOW_FREQ_THRESHOLD = 16.67; // 1帧
-```
-
----
-
-### 10.3 故障排查清单
-
-●检查项列表
+● 检查项列表
 
 **1. 钩子未生效**
 
@@ -7085,7 +4976,7 @@ HookManager.regHook('update', hook, {
 
 ---
 
-### 10.4 常见错误代码
+### 7.4 常见错误代码
 
 **错误1: 路径不存在**
 
@@ -7132,27 +5023,9 @@ HookManager.regHook('update', function(next) {
 
 ---
 
-### 10.5 更新日志
 
-**v1.0.0 (2024-01-01)**
-- ✓ 初始版本
-- ✓ 基础钩子功能
-- ✓ 优先级系统
-- ✓ 条件执行
 
-**v1.1.0 (2024-02-01)**
-- ✓ 性能监控
-- ✓ 统计功能
-- ✓ 批量注册
-
-**v1.2.0 (2024-03-01)**
-- ✓ 条件缓存
-- ✓ 动态启用/禁用
-- ✓ 改进的错误处理
-
----
-
-### 10.6 FAQ
+### 7.5 FAQ
 
 **Q: 钩子和别名有什么区别？**
 
