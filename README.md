@@ -4,7 +4,7 @@
 
 ### 1.1 什么是钩子系统
 
-#### 钩子的概念
+●钩子的概念
 
 **钩子（Hook）** 是一种在不修改原始代码的情况下，拦截并扩展函数功能的技术。就像在函数执行的"关键点"上挂了一个"钩子"，让你可以在函数执行前后插入自己的逻辑。
 
@@ -16,7 +16,7 @@
 开始 → 你的前置逻辑 → 执行函数 → 你的后置逻辑 → 结束
 ```
 
-#### 为什么需要钩子？
+●为什么需要钩子？
 
 **传统方式的问题：**
 
@@ -61,7 +61,7 @@ HookManager.regHook('Game_Player.prototype.moveStraight', function(next, d) {
 - ✅ 可以随时启用/禁用
 - ✅ 易于维护和调试
 
-#### 实际应用场景
+●实际应用场景
 
 | 场景 | 传统方式 | 钩子方式 |
 |------|----------|----------|
@@ -76,7 +76,7 @@ HookManager.regHook('Game_Player.prototype.moveStraight', function(next, d) {
 
 让我们从最简单的例子开始：在玩家移动时打印一条日志。
 
-#### 完整代码
+●完整代码
 
 ```javascript
 // 注册钩子：监听玩家移动
@@ -92,7 +92,7 @@ HookManager.regHook('Game_Player.prototype.moveStraight', function(next, directi
 });
 ```
 
-#### 代码解析
+●代码解析
 
 **1. 目标函数路径**
 ```javascript
@@ -122,7 +122,7 @@ next(); // 调用原始函数
 console.log(this.x, this.y); // this 指向 Game_Player 实例
 ```
 
-#### 运行效果
+●运行效果
 
 当玩家在地图上移动时，控制台会输出：
 
@@ -133,7 +133,7 @@ console.log(this.x, this.y); // this 指向 Game_Player 实例
 玩家移动完成，当前位置: 11 15
 ```
 
-#### 实验：尝试修改
+●实验：尝试修改
 
 **实验1：阻止向下移动**
 ```javascript
@@ -165,7 +165,7 @@ HookManager.regHook('Game_Player.prototype.moveStraight', function(next, directi
 
 ### 1.3 基础概念
 
-#### 钩子链的执行顺序
+●钩子链的执行顺序
 
 当多个钩子注册到同一个函数时，它们会形成一个"钩子链"：
 
@@ -219,7 +219,7 @@ C: 结束
 └─────────────────────────────────┘
 ```
 
-#### `next()` 的调用时机
+●`next()` 的调用时机
 
 **1. Before 模式（前置处理）**
 ```javascript
@@ -262,7 +262,7 @@ HookManager.regHook('someFunction', function(next, arg) {
 });
 ```
 
-#### 如何阻止原函数执行
+●如何阻止原函数执行
 
 **场景1：条件阻止**
 ```javascript
@@ -326,7 +326,7 @@ function(next, ...原函数参数) {
 
 ### 2.1 注册钩子的方式
 
-#### 基础语法
+●基础语法
 
 ```javascript
 HookManager.regHook(target, hookFunc, options);
@@ -340,7 +340,7 @@ HookManager.regHook(target, hookFunc, options);
 | hookFunc | Function | ✓ | 钩子函数 |
 | options | Object | ✗ | 配置选项 |
 
-#### 字符串路径方式
+●字符串路径方式
 
 ```javascript
 // 基础用法
@@ -362,11 +362,11 @@ HookManager.regHook('Game_Actor.prototype.changeHp', function(next, value) {
 
 ---
 
-#### 新旧版本 API 说明
+●新旧版本 API 说明
 
 **HookManager 提供了两种调用方式：**
 
-##### 1. 新版 API（推荐）
+#●1. 新版 API（推荐）
 
 ```javascript
 // 直接使用 HookManager
@@ -388,7 +388,7 @@ unbind();
 - ✓ 完整的功能支持
 - ✓ 返回解绑函数
 
-##### 2. 兼容旧版 API
+#●2. 兼容旧版 API
 **通过 PluginManager 调用：**
 ```javascript
 // 通过 PluginManager 调用（兼容层）
@@ -407,7 +407,7 @@ const unbind = PluginManager.regHook('Game_Player.prototype.update', function(or
 
 ### 2.2 钩子函数的编写
 
-#### 函数签名
+●函数签名
 
 ```javascript
 function(next, ...args) { return result }
@@ -444,7 +444,7 @@ HookManager.regHook('Game_Actor.prototype.changeHp', function(next, value) {
 });
 ```
 
-#### 返回值处理
+●返回值处理
 
 **场景1：不需要返回值**
 ```javascript
@@ -484,7 +484,7 @@ HookManager.regHook('Game_Player.prototype.encounterProgressValue', function(nex
 });
 ```
 
-#### 常见模式
+●常见模式
 
 **Before 模式（前置处理）**
 ```javascript
@@ -571,7 +571,7 @@ HookManager.regHook('Game_Actor.prototype.changeExp', function(next, exp, show) 
 
 ### 2.3 解绑钩子
 
-#### 为什么需要解绑
+●为什么需要解绑
 
 **问题1：内存泄漏**
 ```javascript
@@ -602,7 +602,7 @@ function waitForPlayerMove() {
 }
 ```
 
-#### 使用解绑函数
+●使用解绑函数
 
 **基础用法：**
 ```javascript
@@ -697,7 +697,7 @@ plugin.enable();
 plugin.disable();
 ```
 
-#### 内存泄漏风险
+●内存泄漏风险
 
 **风险场景：**
 ```javascript
@@ -728,7 +728,7 @@ function setupHook() {
 }
 ```
 
-#### 最佳实践
+●最佳实践
 
 **1. 始终保存解绑函数**
 ```javascript
@@ -795,7 +795,7 @@ HookManager.regHook('anotherHook', function(next) {
 
 ### 3.1 优先级（priority）
 
-#### 概念说明
+●概念说明
 
 **什么是优先级？**
 
@@ -829,7 +829,7 @@ HookManager.regHook('update', hook3);
 ```
 ### 3.1 优先级（priority）
 
-#### 使用场景
+●使用场景
 
 **场景1：数据验证 → 数据修改 → UI更新**
 
@@ -872,7 +872,7 @@ HookManager.regHook('Game_Action.prototype.apply', function(next, target) {
 }, { priority: 50, label: '技能特效' });
 ```
 
-#### 常见优先级建议
+●常见优先级建议
 
 | 层级 | 优先级范围 | 用途 | 示例 |
 |------|-----------|------|------|
@@ -882,7 +882,7 @@ HookManager.regHook('Game_Action.prototype.apply', function(next, target) {
 
 ### 3.2 条件执行（condition）
 
-#### 概念说明
+●概念说明
 
 **什么是条件函数？**
 
@@ -906,7 +906,7 @@ HookManager.regHook('update', function(next) {
 HookManager.globalOptions.conditionCacheTime = 100; // 默认100ms
 ```
 
-#### 使用场景
+●使用场景
 
 **场景1：只在战斗中生效**
 
@@ -961,7 +961,7 @@ HookManager.regHook('someFunction', function(next) {
 });
 ```
 
-#### 性能优化
+●性能优化
 
 **条件 vs 解绑的选择：**
 
@@ -994,7 +994,7 @@ HookManager.globalOptions.conditionCacheTime = 500; // 500ms
 ```
 ### 3.3 性能监控（profile）
 
-#### 基础用法
+●基础用法
 
 **开启单个钩子的监控：**
 
@@ -1014,7 +1014,7 @@ HookManager.regHook('Scene_Map.prototype.update', function(next) {
 ⚠️ [Profile] 地图更新: 18.45ms  // 超过阈值
 ```
 
-#### 阈值（threshold）设置
+●阈值（threshold）设置
 
 **默认阈值：16.67ms（60 FPS）**
 
@@ -1041,7 +1041,7 @@ HookManager.regHook('expensiveFunction', function(next) {
 { profile: true, threshold: 5 }
 ```
 
-#### 慢函数回调（onSlow）
+●慢函数回调（onSlow）
 
 **基础用法：**
 
@@ -1102,7 +1102,7 @@ HookManager.regHook('heavyEffect', function(next) {
 });
 ```
 
-#### 标签（label）
+●标签（label）
 
 **为钩子命名：**
 
@@ -1139,7 +1139,7 @@ HookManager.regHook('update', hook3, {
 
 ### 3.4 批量注册（regBatchHooks）
 
-#### 语法和结构
+●语法和结构
 
 **基础语法：**
 
@@ -1167,7 +1167,7 @@ const unbinders = HookManager.regBatchHooks({...});
 // unbinders[1]() - 解绑第二个钩子
 ```
 
-#### 配置对象格式
+●配置对象格式
 
 **完整示例：**
 
@@ -1207,7 +1207,7 @@ const hookConfig = {
 const unbinders = HookManager.regBatchHooks(hookConfig);
 ```
 
-#### 适用场景
+●适用场景
 
 **场景1：插件初始化**
 
@@ -1321,7 +1321,7 @@ function disableBattleModule() {
 }
 ```
 
-#### 完整示例
+●完整示例
 
 **技能增强系统：**
 
@@ -1398,7 +1398,7 @@ SkillEnhancementSystem.enable();
 
 ### 4.1 全局选项说明
 
-#### 访问全局配置
+●访问全局配置
 
 ```javascript
 // 访问全局配置对象
@@ -1416,7 +1416,7 @@ console.log(HookManager.globalOptions);
 */
 ```
 
-#### enableProfiling - 全局性能监控开关
+●enableProfiling - 全局性能监控开关
 
 **作用：** 控制所有钩子的性能监控功能
 
@@ -1461,7 +1461,7 @@ HookManager.regHook('frequentFunction', function(next) {
 });
 ```
 
-#### enableStats - 统计信息收集开关
+●enableStats - 统计信息收集开关
 
 **作用：** 控制是否收集钩子的统计数据
 
@@ -1491,7 +1491,7 @@ HookManager.globalOptions.enableStats = true;  // 开发时使用
 HookManager.globalOptions.enableStats = false; // 生产时关闭
 ```
 
-#### defaultPriority - 默认优先级
+●defaultPriority - 默认优先级
 
 **作用：** 设置钩子的默认优先级
 
@@ -1520,7 +1520,7 @@ HookManager.regHook('someFunction', hookB);
 // 执行顺序：hookA(100) → hookB(30)
 ```
 
-#### conditionCacheTime - 条件缓存时间
+●conditionCacheTime - 条件缓存时间
 
 **作用：** 设置条件函数结果的缓存时间（毫秒）
 
@@ -1552,7 +1552,7 @@ HookManager.globalOptions.conditionCacheTime = 150;
 
 ### 4.2 配置最佳实践
 
-#### 开发环境配置
+●开发环境配置
 
 ```javascript
 // 开发模式检测
@@ -1573,7 +1573,7 @@ if (isDevelopment) {
 }
 ```
 
-#### 生产环境配置
+●生产环境配置
 
 ```javascript
 // 生产模式
@@ -1599,7 +1599,7 @@ if (isProduction) {
 }
 ```
 
-#### 性能测试配置
+●性能测试配置
 
 ```javascript
 // 性能测试模式
@@ -1637,7 +1637,7 @@ function analyzeSlowHooks() {
 }
 ```
 
-#### 动态配置切换
+●动态配置切换
 
 ```javascript
 // 根据设备性能动态调整
@@ -1670,7 +1670,7 @@ Scene_Boot.prototype.start = function() {
 };
 ```
 
-#### 配置模板
+●配置模板
 
 ```javascript
 // 预设配置模板
@@ -1727,7 +1727,7 @@ applyConfig('development');
 
 ### 5.1 基础调试
 
-#### 使用 console.log 追踪执行流程
+●使用 console.log 追踪执行流程
 
 **基础追踪：**
 
@@ -1784,7 +1784,7 @@ HookManager.regHook('Game_Actor.prototype.changeHp', function(next, value) {
 });
 ```
 
-#### 检查钩子是否被调用
+●检查钩子是否被调用
 
 **方法1：计数器**
 
@@ -1829,7 +1829,7 @@ HookManager.regHook('criticalFunction', function(next) {
 });
 ```
 
-#### 验证参数传递
+●验证参数传递
 
 **检查参数类型：**
 
@@ -1879,7 +1879,7 @@ HookManager.regHook('Game_Battler.prototype.performAction', function(next, actio
 
 ### 5.2 性能分析
 
-#### 启用统计功能
+●启用统计功能
 
 **基础启用：**
 
@@ -1925,7 +1925,7 @@ HookManager.regBatchHooks({
 });
 ```
 
-#### 使用 printStats()
+●使用 printStats()
 
 **基础用法：**
 
@@ -2037,7 +2037,7 @@ function suggestOptimizations() {
 }
 ```
 
-#### 使用 getStats(hookId)
+●使用 getStats(hookId)
 
 **获取单个钩子统计：**
 
@@ -2116,7 +2116,7 @@ checkHookPerformance('玩家更新');
 ```
 ### 5.3 动态控制
 
-#### setHookEnabled() 的使用
+●setHookEnabled() 的使用
 
 **基础用法：**
 
@@ -2143,7 +2143,7 @@ HookManager.setHookEnabled('Scene_Map.prototype.update', hookId, false); // 禁�
 HookManager.setHookEnabled('Scene_Map.prototype.update', hookId, true);  // 启用
 ```
 
-#### 临时禁用钩子
+●临时禁用钩子
 
 **场景1：性能对比测试**
 
@@ -2228,7 +2228,7 @@ function testForIssue() {
 }
 ```
 
-#### 获取 hookId 的方法
+●获取 hookId 的方法
 
 **方法1：通过标签查找**
 
@@ -2331,7 +2331,7 @@ if (targetHook) {
 
 ### 5.4 常见问题排查
 
-#### 钩子未生效
+●钩子未生效
 
 **问题1：路径错误**
 
@@ -2455,7 +2455,7 @@ function diagnoseHookNotWorking(hookKey, hookLabel) {
 diagnoseHookNotWorking('Game_Player.prototype.update', '我的钩子');
 ```
 
-#### 钩子执行顺序错误
+●钩子执行顺序错误
 
 **问题：优先级设置不当**
 
@@ -2497,7 +2497,7 @@ function debugHookOrder(hookKey) {
 // 使用
 debugHookOrder('Game_Action.prototype.apply');
 ```
-#### 性能问题
+●性能问题
 
 **问题1：钩子耗时过长**
 
@@ -2642,7 +2642,7 @@ HookManager.regHook('Scene_Map.prototype.update', function(next) {
 });
 ```
 
-#### 内存泄漏
+●内存泄漏
 
 **问题1：未解绑的钩子**
 
@@ -2891,7 +2891,7 @@ function quickDiagnostic() {
 
 ### 6.1 案例1：自定义移动系统
 
-#### 需求分析
+●需求分析
 
 实现一个增强的移动系统，包含以下功能：
 1. 移动时播放脚步声
@@ -2899,7 +2899,7 @@ function quickDiagnostic() {
 3. 记录移动历史（用于回退功能）
 4. 移动速度根据地形变化
 
-#### 钩子设计
+●钩子设计
 
 ```javascript
 // 功能分层设计
@@ -2908,7 +2908,7 @@ function quickDiagnostic() {
 // 优先级 50:  音效播放（最后执行）
 ```
 
-#### 完整代码
+●完整代码
 
 ```javascript
 class EnhancedMovementSystem {
@@ -3043,7 +3043,7 @@ movementSystem.enable();
 window.undoMove = () => movementSystem.undoLastMove();
 ```
 
-#### 测试验证
+●测试验证
 
 ```javascript
 // 测试脚本
@@ -3096,7 +3096,7 @@ function testMovementSystem() {
 
 ### 6.2 案例2：技能增强系统
 
-#### 需求分析
+●需求分析
 
 实现一个技能增强系统，包含：
 1. 技能释放前的条件检查（MP、状态、冷却）
@@ -3104,7 +3104,7 @@ function testMovementSystem() {
 3. 技能特效（额外效果、动画）
 4. 性能监控
 
-#### 多层钩子协作
+●多层钩子协作
 
 ```javascript
 class SkillEnhancementSystem {
@@ -3305,7 +3305,7 @@ window.checkCooldown = (actorId) => {
 };
 ```
 
-#### 技能备注标签示例
+●技能备注标签示例
 
 ```
 技能备注栏配置示例：
@@ -3319,7 +3319,7 @@ window.checkCooldown = (actorId) => {
 <customAnimation:50>     // 播放50号动画
 ```
 
-#### 性能优化
+●性能优化
 
 ```javascript
 // 性能监控
@@ -3349,7 +3349,7 @@ function monitorSkillPerformance() {
 ```
 ### 6.3 案例3：战斗日志系统
 
-#### 需求分析
+●需求分析
 
 实现一个完整的战斗日志系统：
 1. 记录所有战斗行为（攻击、技能、道具）
@@ -3357,7 +3357,7 @@ function monitorSkillPerformance() {
 3. 实时显示日志窗口
 4. 支持日志导出和回放
 
-#### Before/After 模式应用
+●Before/After 模式应用
 
 ```javascript
 class BattleLogSystem {
@@ -3592,7 +3592,7 @@ window.battleStats = () => {
 };
 ```
 
-#### UI更新时机
+●UI更新时机
 
 ```javascript
 // 创建日志窗口（可选）
@@ -3639,14 +3639,14 @@ Scene_Battle.prototype.createAllWindows = function() {
 
 ### 6.4 案例4：插件兼容性处理
 
-#### 需求分析
+●需求分析
 
 处理多个插件之间的兼容性问题：
 1. 检测其他插件的钩子
 2. 调整优先级避免冲突
 3. 提供降级方案
 
-#### 检测其他插件
+●检测其他插件
 
 ```javascript
 class CompatibilityManager {
@@ -3744,7 +3744,7 @@ compatibility.adjustPriorities();
 compatibility.applyCompatibilityPatches();
 ```
 
-#### 优先级协商
+●优先级协商
 
 ```javascript
 // 插件优先级注册表
@@ -3777,7 +3777,7 @@ HookManager.regHook('someFunction', myHook, {
 });
 ```
 
-#### 降级处理
+●降级处理
 
 ```javascript
 class GracefulDegradation {
@@ -3830,7 +3830,7 @@ const unbind = GracefulDegradation.registerWithFallback(
 ```
 ### 6.5 案例5：性能优化实战
 
-#### 问题发现
+●问题发现
 
 ```javascript
 // 步骤1: 启用性能监控
@@ -3924,7 +3924,7 @@ function generatePerformanceReport() {
 // startPerformanceAnalysis();
 ```
 
-#### 瓶颈定位
+●瓶颈定位
 
 ```javascript
 // 深度分析特定函数
@@ -3973,7 +3973,7 @@ function analyzeFunction(functionPath) {
 // analyzeFunction('Game_Map.prototype.update');
 ```
 
-#### 优化方案
+●优化方案
 
 **优化1: 减少不必要的计算**
 
@@ -4167,7 +4167,7 @@ HookManager.regHook('Sprite_Character.prototype.update', function(next) {
 });
 ```
 
-#### 效果对比
+●效果对比
 
 ```javascript
 // 性能对比工具
@@ -4248,7 +4248,7 @@ function testOptimization() {
 // testOptimization();
 ```
 
-#### 优化清单
+●优化清单
 
 ```javascript
 // 性能优化检查清单
@@ -4307,7 +4307,7 @@ function printOptimizationChecklist() {
 
 ### 7.1 代码组织
 
-#### 钩子的模块化管理
+●钩子的模块化管理
 
 **方案1: 按功能模块组织**
 
@@ -4485,7 +4485,7 @@ battleSystem.enable();
 // battleSystem.disable();
 ```
 
-#### 解绑函数的存储
+●解绑函数的存储
 
 **方案1: 使用 Map 存储**
 
@@ -4605,7 +4605,7 @@ manager.register(myObject, 'update', function(next) { next(); });
 // 当 myObject 被垃圾回收时，WeakMap 会自动清理
 ```
 
-#### 插件生命周期管理
+●插件生命周期管理
 
 ```javascript
 class Plugin {
@@ -4763,7 +4763,7 @@ plugin.start();
 
 ### 7.2 性能优化建议
 
-#### 何时使用条件 vs 解绑
+●何时使用条件 vs 解绑
 
 **决策流程：**
 
@@ -4820,7 +4820,7 @@ if (questCompleted) {
 
 ---
 
-#### 避免过深的钩子链
+●避免过深的钩子链
 
 **检测工具：**
 
@@ -4877,7 +4877,7 @@ HookManager.regHook('apply', uiHook, { priority: PRIORITY.UI });
 
 ---
 
-#### 条件函数的优化
+●条件函数的优化
 
 **问题：复杂条件**
 
@@ -4921,7 +4921,7 @@ HookManager.regHook('update', function(next) {
 
 ---
 
-#### 缓存时间的权衡
+●缓存时间的权衡
 
 **默认值：**
 
@@ -4958,7 +4958,7 @@ if (Graphics._fpsMeter.fps < 30) {
 ```
 ### 7.3 错误处理
 
-#### 钩子内的异常捕获
+●钩子内的异常捕获
 
 **基础用法：**
 
@@ -5023,7 +5023,7 @@ HookManager.regHook('Scene_Map.prototype.update', function(next) {
 
 ---
 
-#### 降级策略
+●降级策略
 
 **自动降级：**
 
@@ -5111,7 +5111,7 @@ HookManager.regHook('Scene_Map.prototype.update', function(next) {
 
 ---
 
-#### 日志记录
+●日志记录
 
 **简单日志：**
 
@@ -5198,7 +5198,7 @@ window.exportErrorLog = () => logger.export();
 
 ### 7.4 团队协作
 
-#### 钩子命名规范
+●钩子命名规范
 
 **推荐格式：**
 
@@ -5259,7 +5259,7 @@ HookManager.regHook('update', hook, {
 
 ---
 
-#### 优先级分配约定
+●优先级分配约定
 
 **标准优先级层级：**
 
@@ -5341,7 +5341,7 @@ const priorityB = priorityRegistry.register('PluginB', 'Battle', 100); // 返回
 
 ---
 
-#### 文档编写建议
+●文档编写建议
 
 **钩子文档模板：**
 
@@ -5427,7 +5427,7 @@ HookManager.regHook('Game_Action.prototype.makeDamageValue',
 
 ### 8.1 主要方法
 
-#### regHook(target, hookFunc, options)
+●regHook(target, hookFunc, options)
 
 **描述：** 注册一个钩子到指定的函数或方法
 
@@ -5491,7 +5491,7 @@ if (typeof Game_Player.prototype.update === 'function') {
 
 ---
 
-#### regBatchHooks(hookMap)
+●regBatchHooks(hookMap)
 
 **描述：** 批量注册多个钩子
 
@@ -5596,7 +5596,7 @@ class MyPlugin {
 
 ---
 
-#### setHookEnabled(key, hookId, enabled)
+●setHookEnabled(key, hookId, enabled)
 
 **描述：** 动态启用或禁用特定钩子
 
@@ -5733,7 +5733,7 @@ console.log(controller.isEnabled('particles')); // true/false
 
 ---
 
-#### getStats(hookId)
+●getStats(hookId)
 
 **描述：** 获取指定钩子的统计信息
 
@@ -5820,7 +5820,7 @@ analyzeAllHooks();
 
 ---
 
-#### printStats()
+●printStats()
 
 **描述：** 打印所有钩子的统计信息到控制台
 
@@ -5872,7 +5872,7 @@ setInterval(() => {
 
 ---
 
-#### clearAll()
+●clearAll()
 
 **描述：** 清除所有已注册的钩子
 
@@ -5928,7 +5928,7 @@ class MyPlugin {
 ```
 ### 8.2 配置选项
 
-#### 完整的 options 对象结构
+●完整的 options 对象结构
 
 ```javascript
 {
@@ -5941,7 +5941,7 @@ class MyPlugin {
 }
 ```
 
-#### 参数详细说明
+●参数详细说明
 
 **priority (优先级)**
 
@@ -6148,7 +6148,7 @@ HookManager.regHook('advancedEffect', hook, {
 
 ---
 
-#### 参数组合建议
+●参数组合建议
 
 **场景1：开发调试**
 
@@ -6218,7 +6218,7 @@ HookManager.regHook('Sprite_Character.prototype.update', hook, {
 
 ### 8.3 内部结构（高级）
 
-#### 钩子链的数据结构
+●钩子链的数据结构
 
 **HookManager.hooks 结构：**
 
@@ -6291,7 +6291,7 @@ Map {
 
 ---
 
-#### Proxy 的工作原理
+●Proxy 的工作原理
 
 **Proxy 拦截机制：**
 
@@ -6374,7 +6374,7 @@ Proxy 拦截
 
 ---
 
-#### 条件缓存机制
+●条件缓存机制
 
 **缓存实现：**
 
@@ -6439,7 +6439,7 @@ function clearConditionCache(hookId) {
 
 ### 9.1 从原始插件迁移
 
-#### API 差异对比
+●API 差异对比
 
 **原始别名方式：**
 
@@ -6478,7 +6478,7 @@ HookManager.regHook('Game_Player.prototype.update', function(next) {
 
 ---
 
-#### 迁移步骤
+●迁移步骤
 
 **步骤1：识别所有别名**
 
@@ -6568,7 +6568,7 @@ HookManager.regHook('Scene_Map.prototype.update', function(next) {
 
 ---
 
-#### 兼容性说明
+●兼容性说明
 
 **向后兼容：**
 
@@ -6615,7 +6615,7 @@ HookManager.regHook('Game_Player.prototype.update', hook2);
 
 ### 9.2 从其他钩子系统迁移
 
-#### vs YEP 别名系统
+●vs YEP 别名系统
 
 **YEP 方式：**
 
@@ -6659,7 +6659,7 @@ HookManager.regHook('someFunction', hook, {
 
 ---
 
-#### vs FOSSIL
+●vs FOSSIL
 
 **FOSSIL 方式：**
 
@@ -6702,7 +6702,7 @@ HookManager.regHook('Game_Player.prototype.update', function(next) {
 
 ---
 
-#### 迁移工具脚本
+●迁移工具脚本
 
 **自动转换工具：**
 
@@ -6850,7 +6850,7 @@ console.log(migratedCode);
 
 ### 10.1 常用钩子路径速查表
 
-#### Scene 相关
+●Scene 相关
 
 ```javascript
 // 场景生命周期
@@ -6885,7 +6885,7 @@ console.log(migratedCode);
 'Scene_Item.prototype.useItem'
 ```
 
-#### Game 对象相关
+●Game 对象相关
 
 **Game_Player:**
 
@@ -6948,7 +6948,7 @@ console.log(migratedCode);
 'Game_Map.prototype.scrollUp'
 ```
 
-#### Sprite 相关
+●Sprite 相关
 
 ```javascript
 // 角色精灵
@@ -6970,7 +6970,7 @@ console.log(migratedCode);
 'Sprite_Actor.prototype.updateBitmap'
 ```
 
-#### Window 相关
+●Window 相关
 
 ```javascript
 // 基础窗口
@@ -6994,7 +6994,7 @@ console.log(migratedCode);
 ```
 ### 10.2 性能基准参考
 
-#### 不同场景的性能阈值
+●不同场景的性能阈值
 
 **地图场景 (60fps = 16.67ms/帧):**
 
@@ -7031,7 +7031,7 @@ const LOW_FREQ_THRESHOLD = 16.67; // 1帧
 
 ### 10.3 故障排查清单
 
-#### 检查项列表
+●检查项列表
 
 **1. 钩子未生效**
 
